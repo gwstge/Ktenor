@@ -73,13 +73,19 @@
   --scrim: rgb(20 22 28 / 0.4);
 }
 
-/* Weak GPU / no backdrop-filter: translucent fill + hairline, zero blur.
-   Set by the runtime capability check; the @supports guard is the fallback
-   for browsers that never had backdrop-filter at all. */
-[data-glass="lite"],
-@supports not (backdrop-filter: blur(1px)) {
+/* Weak GPU: translucent fill + hairline, zero blur.
+   Set at runtime by the capability probe. */
+[data-glass="lite"] {
   --glass-blur: 0px;
   --glass-saturate: 100%;
+}
+
+/* Browsers that never had backdrop-filter at all. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-blur: 0px;
+    --glass-saturate: 100%;
+  }
 }
 
 @theme inline {
@@ -240,8 +246,9 @@
     background-color: var(--glass-bg);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
+    /* No manual -webkit- prefix: Lightning CSS adds it from the browser
+       targets, and a hand-written duplicate makes it drop the standard one. */
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   }
 
   .container-page {

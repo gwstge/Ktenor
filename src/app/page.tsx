@@ -1,69 +1,134 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+
+/**
+ * TEMPORARY — design token preview.
+ * Exists so the foundation can be reviewed in both themes before any
+ * section is built. Replaced by the real home page.
+ */
+
+const swatches = [
+  { name: "bg", var: "--c-bg" },
+  { name: "bg-raised", var: "--c-bg-raised" },
+  { name: "bg-overlay", var: "--c-bg-overlay" },
+  { name: "text", var: "--c-text" },
+  { name: "text-secondary", var: "--c-text-secondary" },
+  { name: "text-muted", var: "--c-text-muted" },
+  { name: "accent", var: "--c-accent" },
+  { name: "accent-strong", var: "--c-accent-strong" },
+  { name: "accent-deep", var: "--c-accent-deep" },
+  { name: "silver", var: "--c-silver" },
+];
+
+const scale = [
+  { label: "display", cls: "text-display" },
+  { label: "h1", cls: "text-h1" },
+  { label: "h2", cls: "text-h2" },
+  { label: "h3", cls: "text-h3" },
+];
+
+export default function TokenPreview() {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="container-page py-[var(--spacing-block)]">
+      <header className="flex flex-wrap items-center justify-between gap-4 pb-[var(--spacing-block)]">
+        <div>
+          <p className="text-caption uppercase tracking-[0.22em] text-text-muted">
+            Foundation preview
+          </p>
+          <h1 className="text-h2 mt-2">Design tokens</h1>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+          className="glass cursor-pointer rounded-[var(--radius-sm)] px-5 py-3 text-sm font-medium transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-[var(--glass-bg-hover)]"
+        >
+          {theme === "dark" ? "Switch to light" : "Switch to dark"}
+        </button>
+      </header>
+
+      <section className="border-t border-line pt-[var(--spacing-block)]">
+        <h2 className="text-h3 mb-6">Palette</h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {swatches.map((s) => (
+            <div key={s.name}>
+              <div
+                className="h-20 w-full rounded-[var(--radius-sm)] border border-line-strong"
+                style={{ background: `var(${s.var})` }}
+              />
+              <p className="mt-2 text-caption text-text-secondary">{s.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-[var(--spacing-block)] border-t border-line pt-[var(--spacing-block)]">
+        <h2 className="text-h3 mb-6">Type scale — Clash Display</h2>
+        <div className="space-y-4">
+          {scale.map((s) => (
+            <div key={s.label} className="flex items-baseline gap-6">
+              <span className="w-20 shrink-0 text-caption text-text-muted tabular">
+                {s.label}
+              </span>
+              <span
+                className="font-display"
+                style={{ fontSize: `var(--${s.cls})`, lineHeight: 1.08 }}
+              >
+                Ktenor
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 max-w-[65ch] space-y-3">
+          <p className="text-lead">
+            Satoshi at lead size — the register used for hero sub-headlines and
+            section intros.
+          </p>
+          <p className="text-text-secondary">
+            Body copy in Satoshi. Every colour pair on this page clears WCAG AA
+            in both themes, including the muted tone below.
+          </p>
+          <p className="text-text-muted text-sm">
+            Muted text — the lowest contrast allowed anywhere on the site.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="mt-[var(--spacing-block)] border-t border-line pt-[var(--spacing-block)] pb-[var(--spacing-section)]">
+        <h2 className="text-h3 mb-6">Liquid glass</h2>
+        <div className="relative overflow-hidden rounded-[var(--radius-lg)] p-8 sm:p-14">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10"
+            style={{
+              background:
+                "radial-gradient(60% 80% at 25% 40%, var(--c-accent-deep), transparent 70%), radial-gradient(50% 70% at 75% 60%, var(--c-accent), transparent 75%)",
+              opacity: 0.55,
+            }}
+          />
+          <div className="glass max-w-md rounded-[var(--radius-md)] p-6">
+            <p className="font-display text-h3">Glass surface</p>
+            <p className="mt-2 text-sm text-text-secondary">
+              Blur, saturation and hairline edge all come from tokens. On a weak
+              device the blur drops to zero and the fill carries the surface.
+            </p>
+            <button
+              type="button"
+              className="mt-5 cursor-pointer rounded-[var(--radius-sm)] bg-accent px-5 py-2.5 text-sm font-medium text-accent-contrast transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-accent-strong"
+            >
+              Accent button
+            </button>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

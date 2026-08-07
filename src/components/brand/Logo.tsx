@@ -18,9 +18,9 @@ type LogoProps = {
   style?: React.CSSProperties;
   /** Omit for decorative use next to a visible wordmark. */
   title?: string;
-};
+} & React.SVGProps<SVGSVGElement>;
 
-export function Logo({ variant = "mark", className, style, title }: LogoProps) {
+export function Logo({ variant = "mark", className, style, title, ...rest }: LogoProps) {
   const showBars = variant === "mark";
 
   return (
@@ -31,6 +31,7 @@ export function Logo({ variant = "mark", className, style, title }: LogoProps) {
       style={style}
       role={title ? "img" : undefined}
       aria-hidden={title ? undefined : true}
+      {...rest}
     >
       {title ? <title>{title}</title> : null}
 

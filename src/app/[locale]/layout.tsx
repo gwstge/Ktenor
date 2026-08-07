@@ -5,6 +5,7 @@ import { getDictionary } from "@/i18n";
 import { isLocale, locales, localeTags, type Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
 import { ThemeScript } from "@/components/theme/theme-script";
+import { Intro } from "@/components/intro/Intro";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "../globals.css";
@@ -78,8 +79,9 @@ export default async function LocaleLayout({
           {t.nav.skipToContent}
         </a>
 
+        <Intro />
         <Header locale={locale} t={t} />
-        <main id="main" className="flex-1">
+        <main id="main" tabIndex={-1} className="flex-1 outline-none">
           {children}
         </main>
         <Footer locale={locale} t={t} />

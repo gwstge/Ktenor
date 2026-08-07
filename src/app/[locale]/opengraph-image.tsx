@@ -1,8 +1,13 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { isLocale } from "@/i18n/config";
+import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
+
+/** Rendered at build time — nothing here changes per request. */
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

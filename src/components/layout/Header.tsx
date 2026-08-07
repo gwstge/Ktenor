@@ -81,7 +81,7 @@ export function Header({ locale, t }: Props) {
           aria-label={site.name}
           className="flex items-center gap-3 rounded-[var(--radius-xs)]"
         >
-          <Logo className="h-7 w-auto" />
+          <Logo data-logo-target className="h-7 w-auto" />
           <span
             className="font-display text-[0.95rem] font-medium uppercase leading-none"
             style={{ letterSpacing: "0.18em" }}

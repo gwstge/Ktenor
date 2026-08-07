@@ -21,6 +21,11 @@ const script = `
       (navigator.connection && navigator.connection.saveData) ||
       !CSS.supports('backdrop-filter', 'blur(1px)');
     if (slow) document.documentElement.dataset.glass = 'lite';
+
+    // Marked before first paint so a returning visitor never sees the intro
+    // flash on its way out.
+    if (sessionStorage.getItem('ktenor-intro') === 'done')
+      document.documentElement.dataset.intro = 'done';
   } catch (e) {}
 })();
 `;

@@ -4,41 +4,59 @@ Last updated: 2026-08-08
 
 ## Done
 
-- [x] Environment: project on `D:\ktenor`, npm cache moved to `D:\npm-cache`
-- [x] Next.js 16.3 + React 19.2 + TypeScript + Tailwind v4 scaffolded
-- [x] Git initialised, remote → https://github.com/gwstge/Ktenor
-- [x] Fonts self-hosted: Clash Display 400/500/600/700, Satoshi 400/500/700
-      (`src/fonts/`, ~133 KB) wired through `next/font/local`
-- [x] `src/lib/site.ts` — contacts, region, feature flags, `NEXT_PUBLIC_SITE_URL`
-- [x] `src/app/globals.css` — full token system: both themes, glass tiers with
-      degradation, fluid type scale, spacing rhythm, motion tokens, z-index
-      scale, focus rings, reduced-motion
-- [x] `docs/BRIEF.md` — the agreed brief in full
-- [x] `.claude/launch.json` — dev server config
+**Foundation**
+- [x] Project on `D:\ktenor`, npm cache on `D:\npm-cache`, repo `gwstge/Ktenor`
+- [x] Next.js 16.3 + React 19.2 + TypeScript + Tailwind v4
+- [x] Clash Display + Satoshi self-hosted (~133 KB, zero third-party requests)
+- [x] Token system: both themes as designed counterparts, glass tiers with
+      degradation, fluid type scale, motion and z-index scales, WCAG AA floor
+- [x] Logo rebuilt as SVG from measured geometry; favicon set; compact cut for
+      small sizes
+
+**Structure**
+- [x] `/sk` and `/en`, bare domain redirects to the remembered language
+- [x] Typed dictionaries — a missing translation is a type error
+- [x] Theme applied before first paint; choice persisted for a year
+- [x] Weak-device probe drops the glass blur before anything renders
+- [x] Header with focus-trapped mobile menu; extended footer
+
+**Content**
+- [x] Hero — stays dark in both themes, video attaches after mount
+- [x] Work, Services (+ add-ons), Process, Principles, Advantages, FAQ,
+      final CTA, Contact form
+- [x] Testimonials built but gated behind `site.features.testimonials`
+- [x] Intro screen — bars track real readiness, mark flies to the header,
+      once per session, suppressed before first paint on repeat visits
+
+**Edges**
+- [x] Privacy Policy describing only what the site actually does
+- [x] Branded 404 and 500, plus a dependency-free global error page
+- [x] sitemap.xml with per-locale alternates, robots.txt
+- [x] OG image generated from the dictionary at build time
 
 ## Next
 
-- [ ] Logo → hand-built SVG + favicon set (**show to owner before it spreads**)
-- [ ] Theme provider: dark default, choice remembered, no flash on first paint
-- [ ] Glass capability probe → `data-glass="lite"` on weak devices
-- [ ] i18n: `[locale]` routing, typed dictionaries, root redirect to `/sk`,
-      hreflang + canonicals
-- [ ] Re-encode hero video (AV1/VP9 + H.264 fallback, mobile variants) and
-      poster → AVIF/WebP. **Needs ffmpeg, not installed — ask the owner first**
-- [ ] Intro screen + Hero → show for approval
-- [ ] Then section by section: Portfolio → Services → Process → Principles →
-      Advantages → Testimonials (flagged off) → FAQ → Final CTA → Contact → Footer
-- [ ] Polish phase: 404 + 500
+- [ ] Re-encode the hero video — **blocked, see below**
+- [ ] `favicon.ico` for legacy browsers (currently a harmless 404)
+- [ ] Scroll choreography: section reveals, Lenis smooth scroll, restrained
+      custom cursor
+- [ ] Full pass on 375px and landscape, real-device check
+- [ ] Push to GitHub and first Vercel deploy
+- [ ] Then: the four demo projects
 
 ## Open questions for the owner
 
-1. **ffmpeg is not installed** and is needed to re-encode the hero video.
-   Install it, or ship a temporarily heavier video until it is available?
-2. Domain name — still pending; `NEXT_PUBLIC_SITE_URL` is a placeholder.
-3. Intro-screen assets, if any beyond the logo.
+1. **The hero video still ships at 5 MB.** ffmpeg is not installed, so it
+   cannot be re-encoded yet. Either install ffmpeg, or approve `ffmpeg-static`
+   as a dev dependency. Until then the first screen is far heavier than the
+   performance target allows.
+2. **Domain** — `NEXT_PUBLIC_SITE_URL` currently falls back to a placeholder,
+   which is what canonicals, sitemap, hreflang and OG all resolve against.
+3. **Slovak proof-read** by a native speaker before launch.
 
 ## Conventions
 
-- Nothing in the brief changes without the owner's approval.
+- Nothing in `BRIEF.md` changes without the owner's approval.
 - Each finished section gets its own commit.
-- The owner reviews after every major section, locally, before we move on.
+- Prices, timelines and section ids live in `src/content/services.ts` — stated
+  once, never duplicated into copy.

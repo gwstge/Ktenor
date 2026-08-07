@@ -39,7 +39,9 @@ export function Reveal() {
       const viewport = window.innerHeight;
       pending.forEach((el) => {
         const rect = el.getBoundingClientRect();
-        if (rect.top < viewport * 0.92 && rect.bottom > 0) {
+        // No lower bound: anything already scrolled past has effectively been
+        // seen, and leaving it hidden behind the reader is the worst outcome.
+        if (rect.top < viewport * 0.92) {
           reveal(el);
           observer.unobserve(el);
           pending.delete(el);

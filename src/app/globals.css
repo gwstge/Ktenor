@@ -8,7 +8,10 @@
 
 @custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
-:root {
+/* Also matches a nested [data-theme="dark"], so the Hero can stay dark while
+   the rest of the page is in light mode. */
+:root,
+[data-theme="dark"] {
   color-scheme: dark;
 
   /* --- Surfaces -------------------------------------------------------- */

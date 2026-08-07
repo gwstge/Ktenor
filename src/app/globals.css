@@ -35,6 +35,9 @@
 
   /* --- Lines & silver -------------------------------------------------- */
   --c-silver: #c9ceda;
+  /* Muted enough not to shout on a premium surface, still 9:1 on the base. */
+  --c-danger: #e0a0a0;
+  --c-danger-border: #d98a8a;
   --c-line: rgb(238 239 244 / 0.09);
   --c-line-strong: rgb(238 239 244 / 0.16);
 
@@ -68,6 +71,8 @@
   --c-accent-contrast: #ffffff;
 
   --c-silver: #6b7280;
+  --c-danger: #9b2c2c;
+  --c-danger-border: #b04545;
   --c-line: rgb(20 22 28 / 0.1);
   --c-line-strong: rgb(20 22 28 / 0.18);
 
@@ -110,6 +115,7 @@
   --color-accent-contrast: var(--c-accent-contrast);
 
   --color-silver: var(--c-silver);
+  --color-danger: var(--c-danger);
   --color-line: var(--c-line);
   --color-line-strong: var(--c-line-strong);
 

@@ -49,6 +49,320 @@ const sk: Dictionary = {
     sub: "Za každým projektom stojí jeden človek — od prvého náčrtu až po spustený web. Žiadne šablóny, žiadne odovzdávanie, žiadne kompromisy v detailoch.",
   },
 
+  work: {
+    eyebrow: "Vybrané práce",
+    title: "Koncepty, ktoré môžete posúdiť.",
+    intro:
+      "Štyri projekty, štyri odvetvia, štyri vizuálne jazyky. Ani jeden nie je klientsky web — existujú preto, aby ste si remeslo mohli posúdiť skôr, než sa k čomukoľvek zaviažete.",
+    badge: "Demo projekt",
+    note: "Koncept — dizajn a vývoj. Nie je to klientsky web.",
+    comingSoon: "Čoskoro",
+    projects: {
+      cafe: {
+        name: "Kaviareň",
+        description: "Teplé, hmatateľné, bez zhonu. Menu a atmosféra na prvom mieste.",
+      },
+      store: {
+        name: "E-shop",
+        description: "Moderný minimalizmus. Stránku nesie produktová fotografia.",
+      },
+      dental: {
+        name: "Zubná klinika",
+        description: "Čisté a profesionálne. Dôvera cez pokoj a zrozumiteľnosť.",
+      },
+      realestate: {
+        name: "Reality",
+        description: "Zdržanlivé a drahé. Nehnuteľnosť prezentovaná ako architektúra.",
+      },
+    },
+  },
+
+  services: {
+    eyebrow: "Služby",
+    title: "Čo staviam.",
+    intro:
+      "Každý projekt navrhujem a programujem od nuly. Nižšie sú vstupné ceny — konečná suma závisí od rozsahu.",
+    from: "od",
+    onRequest: "Na vyžiadanie",
+    timeline: "Termín",
+    includedTitle: "Súčasťou každého projektu",
+    included: [
+      "Dizajn od nuly — žiadne šablóny",
+      "Responzívnosť na všetkých zariadeniach",
+      "Základné SEO od prvého dňa",
+      "Optimalizovaný výkon pred spustením",
+      "Premyslené animácie a mikrointerakcie",
+      "Dve kolá úprav",
+    ],
+    addonsTitle: "Doplnky",
+    addonsIntro: "Účtujú sa zvlášť, aby ceny vyššie zostali poctivé.",
+    addons: {
+      multilingual: { name: "Ďalší jazyk", note: "za jazyk" },
+      support: { name: "Priebežná podpora", note: "mesačne" },
+      copywriting: { name: "Písanie textov", note: "cena podľa projektu" },
+      content: { name: "Naplnenie obsahom", note: "cena podľa projektu" },
+      hosting: { name: "Doména a hosting", note: "v nákladovej cene, nastavím za vás" },
+      integrations: { name: "Funkcie a integrácie", note: "cena podľa projektu" },
+    },
+    payment: "50 % vopred, 50 % po dokončení — pred spustením webu.",
+    disclaimer:
+      "Vstupné ceny sú orientačné. Konečná cena závisí od rozsahu projektu, funkcionality a požiadaviek.",
+    items: {
+      mini: {
+        name: "Mini web / Digitálne menu",
+        description:
+          "Jedna presná stránka pre kaviareň, barbershop alebo lokálny podnik. Všetko, čo zákazník potrebuje, a nič navyše.",
+        timeline: "2–5 pracovných dní",
+      },
+      landing: {
+        name: "Landing Page",
+        description:
+          "Jedna stránka postavená na konverziu: jasný argument, jeden cieľ a žiadna iná cesta von než tá, ktorú chcete.",
+        timeline: "5–7 pracovných dní",
+      },
+      portfolio: {
+        name: "Portfóliový web",
+        description:
+          "Pre tých, za koho má hovoriť práca. Tiché rozhranie, veľkorysý priestor, rýchle galérie.",
+        timeline: "1–2 týždne",
+      },
+      business: {
+        name: "Firemný / viacstránkový web",
+        description:
+          "Od kompaktnej firemnej prezentácie po rozsiahlu viacstránkovú štruktúru — služby, referencie, tím, kontakt.",
+        timeline: "2–4 týždne",
+      },
+      store: {
+        name: "E-shop",
+        description:
+          "Katalóg, produktové stránky, košík a objednávka. Postavené tak, aby sa prehliadalo ľahko a nakupovalo bezpečne.",
+        timeline: "3–5 týždňov",
+      },
+      custom: {
+        name: "Web na mieru",
+        description:
+          "Niečo, čo nezapadá do kategórie. Povedzte mi, čo má robiť, a ja poviem, čo si to vyžiada.",
+        timeline: "Určíme spoločne",
+      },
+    },
+    enquiry: {
+      title: "Neviete, čo si vybrať?",
+      description:
+        "Väčšina projektov neprichádza označená. Opíšte vlastnými slovami, čo potrebujete, a ja sa ozvem s rozsahom aj cenou.",
+    },
+  },
+
+  process: {
+    eyebrow: "Postup",
+    title: "Ako projekt prebieha.",
+    intro:
+      "Šesť fáz, žiadne prekvapenia. Viete, čo sa práve deje, čo nasleduje a v akom stave projekt je.",
+    hint: "Prejdite kurzorom pre viac",
+    steps: {
+      analysis: {
+        name: "Analýza",
+        description:
+          "Pre koho je web, čo má dosiahnuť a v čom je konkurencia dobrá. Rozhodnutia sú tým lacnejšie, čím skôr padnú.",
+      },
+      planning: {
+        name: "Plánovanie",
+        description:
+          "Štruktúra, zoznam stránok, cesta návštevníka. Kostru schválite skôr, než sa začne kresliť.",
+      },
+      design: {
+        name: "Dizajn",
+        description:
+          "Kompozícia, typografia, farba a pohyb — navrhnuté pre váš obsah, nie vložené do šablóny.",
+      },
+      development: {
+        name: "Vývoj",
+        description:
+          "Čistý, moderný kód. Responzívny od prvého commitu, nie dorobený na konci.",
+      },
+      testing: {
+        name: "Testovanie",
+        description:
+          "Každý breakpoint, reálne zariadenia, ovládanie klávesnicou, kontrast a rýchlosť. Nájdem to ja, nie vaši zákazníci.",
+      },
+      launch: {
+        name: "Spustenie",
+        description:
+          "Doména, hosting, indexácia a spoločná záverečná kontrola. Potom je web váš.",
+      },
+    },
+  },
+
+  principles: {
+    eyebrow: "Princípy",
+    title: "Ako pracujem.",
+    intro: "Priamo, bez sprostredkovateľov — a so zodpovednosťou za výsledok.",
+    items: {
+      honesty: {
+        name: "Radšej úprimne než pohodlne",
+        description:
+          "Ak nápad nebude fungovať, poviem to skôr, než vás to bude stáť peniaze — nie potom.",
+      },
+      deadlines: {
+        name: "Termíny, ktoré držia",
+        description:
+          "Termín je záväzok. Ak ho niečo ohrozí, viete o tom včas, nie v deň odovzdania.",
+      },
+      details: {
+        name: "Detail ako štandard",
+        description:
+          "Hover stavy, fokus, prázdne stavy, nesprávna veľkosť obrazovky. Časti, ktoré nikto neukazuje.",
+      },
+      quality: {
+        name: "Kvalita pred kvantitou",
+        description:
+          "Naraz menej projektov. Ten váš nie je položka v poradí.",
+      },
+      result: {
+        name: "Výsledok pred procesom",
+        description:
+          "Nikto si nekupuje wireframy. Rozhoduje to, čo hotový web urobí pre vás.",
+      },
+      transparency: {
+        name: "Nič skryté",
+        description:
+          "Jasná cena, jasný rozsah, jasný stav. Vždy viete, za čo platíte.",
+      },
+    },
+  },
+
+  advantages: {
+    eyebrow: "Prečo Ktenor",
+    title: "Jeden človek. Od začiatku do konca.",
+    intro:
+      "Hovoríte priamo s tým, kto web navrhuje, programuje aj spúšťa. Nič sa nestratí medzi manažérom, dizajnérom a vývojárom — pretože je to ten istý človek.",
+    items: {
+      direct: {
+        name: "Priamy kontakt",
+        description:
+          "Žiadni account manažéri, žiadne odovzdávanie, žiadne „overím to s tímom“.",
+      },
+      stack: {
+        name: "Moderné technológie",
+        description:
+          "Aktuálne nástroje, nie skladačka stránok. Web zostane udržateľný dlho po spustení.",
+      },
+      performance: {
+        name: "Postavené na rýchlosť",
+        description:
+          "Výkon je tu podmienkou dizajnu, nie optimalizáciou na konci.",
+      },
+      responsive: {
+        name: "Každá obrazovka",
+        description:
+          "Telefón, tablet, notebook, desktop — navrhnuté pre každý, nie natlačené do jedného.",
+      },
+      seo: {
+        name: "SEO od prvého dňa",
+        description:
+          "Štruktúra, metadáta a indexácia riešené počas stavby, nie dolepené neskôr.",
+      },
+      bespoke: {
+        name: "Nič z police",
+        description:
+          "Web kreslím pre váš obsah. Žiadna téma, žiadny recyklovaný layout.",
+      },
+    },
+  },
+
+  testimonials: {
+    eyebrow: "Referencie",
+    title: "Čo hovoria klienti.",
+    empty: "Prvé recenzie sa objavia tu.",
+  },
+
+  faq: {
+    eyebrow: "Časté otázky",
+    title: "Skôr než sa spýtate.",
+    items: {
+      timeline: {
+        question: "Ako dlho bude môj web trvať?",
+        answer:
+          "Od dvoch dní po päť týždňov podľa služby — každá má uvedený vlastný rozsah. Termín platí, keď je dohodnutý rozsah; ak ho niečo ohrozí, dozviete sa to včas.",
+      },
+      price: {
+        question: "Prečo je cena len vstupná?",
+        answer:
+          "Pretože práca nie je pri každom projekte rovnaká. Uvedená suma je poctivá spodná hranica pre daný typ webu; konečné číslo závisí od počtu stránok, funkcií a od toho, koľko obsahu už máte.",
+      },
+      content: {
+        question: "Musím dodať texty a fotografie?",
+        answer:
+          "Môžete a udrží to cenu nižšie. Ak nechcete, písanie textov aj naplnenie obsahom sú doplnkové služby a postarám sa o ne.",
+      },
+      revisions: {
+        question: "Čo ak budem chcieť zmeny?",
+        answer:
+          "Dve kolá úprav sú súčasťou každého projektu. Ďalšie kolá sa účtujú. Opravy chýb po spustení nie sú úpravy a nikdy sa tak neúčtujú.",
+      },
+      payment: {
+        question: "Ako prebieha platba?",
+        answer:
+          "50 % vopred na začiatku, 50 % po dokončení pred spustením webu. Medzi tým žiadne skryté poplatky.",
+      },
+      after: {
+        question: "Čo sa deje po spustení?",
+        answer:
+          "Web je váš. Ak chcete, aby som ho udržiaval a sledoval, priebežná podpora je dostupná mesačne — ale je dobrovoľná, nikdy nie je súčasťou balíka.",
+      },
+    },
+  },
+
+  cta: {
+    title: "Máte niečo v hlave?",
+    description:
+      "Menej projektov, plná pozornosť. Povedzte mi, čo potrebujete, a dostanete priamu odpoveď na rozsah, termín aj cenu.",
+  },
+
+  contact: {
+    eyebrow: "Kontakt",
+    title: "Začnime projekt.",
+    intro:
+      "Vyplňte, čo viete. Na začiatok stačí meno a jeden kontakt.",
+    fields: {
+      name: "Meno",
+      email: "E-mail",
+      phone: "Telefón",
+      contactHint: "E-mail alebo telefón — stačí jedno z toho.",
+      service: "Čo potrebujete?",
+      servicePlaceholder: "Vyberte službu",
+      budget: "Rozpočet",
+      budgetPlaceholder: "Vyberte rozsah",
+      timeline: "Želaný termín",
+      message: "O projekte",
+      messagePlaceholder: "Na čo má slúžiť, čo má robiť, čokoľvek už viete.",
+      optional: "nepovinné",
+      required: "povinné",
+    },
+    budgets: {
+      under500: "Do 500 €",
+      "500to1500": "500 – 1 500 €",
+      "1500to3000": "1 500 – 3 000 €",
+      over3000: "3 000 € a viac",
+    },
+    consent: {
+      label: "Súhlasím so spracovaním osobných údajov",
+      link: "Ochrana osobných údajov",
+    },
+    submit: "Odoslať dopyt",
+    notice: {
+      title: "Tento formulár zatiaľ nie je pripojený.",
+      body: "Odosielanie sa práve nastavuje. Kým nebude v prevádzke, ozvite sa mi priamo — odpovedám rýchlo.",
+    },
+    errors: {
+      name: "Zadajte prosím svoje meno.",
+      contact: "Nechajte prosím e-mail alebo telefón.",
+      email: "Táto e-mailová adresa nevyzerá správne.",
+      service: "Vyberte prosím, čo potrebujete.",
+      consent: "Potvrďte prosím súhlas so spracovaním údajov.",
+    },
+    direct: "Alebo mi napíšte priamo",
+  },
+
   footer: {
     tagline: "Prémiové weby, navrhnuté a postavené od začiatku do konca.",
     navTitle: "Navigácia",
@@ -58,6 +372,20 @@ const sk: Dictionary = {
     rights: "Všetky práva vyhradené.",
     privacy: "Ochrana osobných údajov",
     location: "Bratislava, Slovensko — pracujem na diaľku po celej krajine",
+  },
+
+  notFound: {
+    title: "Táto stránka neexistuje.",
+    description: "Adresa je nesprávna alebo sa stránka presunula. Tadiaľto späť.",
+    services: "Služby",
+    work: "Práce",
+    orWrite: "Alebo mi jednoducho napíšte",
+  },
+
+  error: {
+    title: "Niečo sa pokazilo.",
+    description: "Nastala neočakávaná chyba. Skúste to znova alebo ma kontaktujte priamo.",
+    retry: "Skúsiť znova",
   },
 };
 

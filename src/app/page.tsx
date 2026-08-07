@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Logo, Wordmark } from "@/components/brand/Logo";
 
 /**
  * TEMPORARY — design token preview.
@@ -55,6 +56,33 @@ export default function TokenPreview() {
       </header>
 
       <section className="border-t border-line pt-[var(--spacing-block)]">
+        <h2 className="text-h3 mb-6">Logo</h2>
+        <div className="flex flex-wrap items-end gap-x-16 gap-y-10">
+          <div>
+            <Logo title="Ktenor" className="h-40 w-auto" />
+            <p className="mt-4 text-caption text-text-muted">mark</p>
+          </div>
+          <div>
+            <Logo variant="compact" className="h-40 w-auto" />
+            <p className="mt-4 text-caption text-text-muted">compact — favicon</p>
+          </div>
+          <div>
+            <Wordmark className="text-[2.5rem]" />
+            <p className="mt-4 text-caption text-text-muted">lockup</p>
+          </div>
+        </div>
+
+        <div className="mt-10 flex items-end gap-8">
+          {[16, 24, 32, 48].map((px) => (
+            <div key={px} className="text-center">
+              <Logo variant="compact" style={{ height: px }} className="w-auto" />
+              <p className="mt-3 text-caption text-text-muted tabular">{px}px</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-[var(--spacing-block)] border-t border-line pt-[var(--spacing-block)]">
         <h2 className="text-h3 mb-6">Palette</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {swatches.map((s) => (

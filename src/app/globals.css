@@ -25,6 +25,8 @@
   /* --- Accent: steel blue, derived from the logo, muted for premium ---- */
   --c-accent: #6e8fc4; /*  5.9:1 on --c-bg */
   --c-accent-strong: #8aa7d6;
+  /* Middle step of the logo's three-bar ramp. */
+  --c-accent-mid: #46618f;
   --c-accent-deep: #2a3a55;
   --c-accent-contrast: #0b0c11; /* text on a filled accent surface */
 
@@ -58,6 +60,7 @@
 
   --c-accent: #35547f; /*  7.1:1 — blue needs to go dark on light */
   --c-accent-strong: #24405f;
+  --c-accent-mid: #2a4467;
   --c-accent-deep: #22344e;
   --c-accent-contrast: #ffffff;
 
@@ -99,6 +102,7 @@
 
   --color-accent: var(--c-accent);
   --color-accent-strong: var(--c-accent-strong);
+  --color-accent-mid: var(--c-accent-mid);
   --color-accent-deep: var(--c-accent-deep);
   --color-accent-contrast: var(--c-accent-contrast);
 

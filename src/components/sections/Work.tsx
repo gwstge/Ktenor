@@ -11,7 +11,7 @@ import { Section } from "@/components/ui/Section";
 export function Work({ t }: { t: Dictionary }) {
   return (
     <Section id="work" eyebrow={t.work.eyebrow} title={t.work.title} intro={t.work.intro}>
-      <ul className="grid gap-5 sm:grid-cols-2">
+      <ul data-reveal-group className="grid gap-5 sm:grid-cols-2">
         {projectIds.map((id, index) => {
           const project = t.work.projects[id];
           return (

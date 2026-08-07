@@ -10,6 +10,9 @@ import { THEME_COOKIE } from "@/lib/theme";
 const script = `
 (function () {
   try {
+    // Dropped before first paint, so scroll reveals can safely start hidden.
+    document.documentElement.classList.remove('no-js');
+
     var m = document.cookie.match(/(?:^|; )${THEME_COOKIE}=([^;]*)/);
     var t = m && m[1] === 'light' ? 'light' : 'dark';
     document.documentElement.dataset.theme = t;

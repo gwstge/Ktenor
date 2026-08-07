@@ -10,7 +10,7 @@ export function Principles({ t }: { t: Dictionary }) {
       title={t.principles.title}
       intro={t.principles.intro}
     >
-      <ul className="grid gap-x-12 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
+      <ul data-reveal-group className="grid gap-x-12 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
         {principleIds.map((id) => {
           const item = t.principles.items[id];
           return (

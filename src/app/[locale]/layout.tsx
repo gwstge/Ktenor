@@ -6,6 +6,9 @@ import { isLocale, locales, localeTags, type Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { Intro } from "@/components/intro/Intro";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { Reveal } from "@/components/motion/Reveal";
+import { Cursor } from "@/components/motion/Cursor";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "../globals.css";
@@ -65,13 +68,15 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       data-theme="dark"
-      className={`${clashDisplay.variable} ${satoshi.variable} h-full antialiased`}
+      /* No h-full here: it pins the document to the viewport height and the
+         page cannot scroll at all. */
+      className={`${clashDisplay.variable} ${satoshi.variable} no-js antialiased`}
       suppressHydrationWarning
     >
       <head>
         <ThemeScript />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-dvh flex-col">
         <a
           href="#main"
           className="glass sr-only rounded-[var(--radius-sm)] px-4 py-2 focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[var(--z-modal)]"
@@ -80,6 +85,9 @@ export default async function LocaleLayout({
         </a>
 
         <Intro />
+        <SmoothScroll />
+        <Reveal />
+        <Cursor />
         <Header locale={locale} t={t} />
         <main id="main" tabIndex={-1} className="flex-1 outline-none">
           {children}

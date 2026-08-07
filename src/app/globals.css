@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Required by Lenis — without it the scroll container is never set up. */
+@import "lenis/dist/lenis.css";
 
 /* ==========================================================================
    KTENOR — design tokens
@@ -262,6 +264,59 @@
     /* No manual -webkit- prefix: Lightning CSS adds it from the browser
        targets, and a hand-written duplicate makes it drop the standard one. */
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  }
+
+  /* Custom cursor. The native one is only hidden once ours is actually
+     running, so a failed script never leaves the page without a pointer. */
+  [data-cursor="custom"],
+  [data-cursor="custom"] * {
+    cursor: none !important;
+  }
+
+  [data-cursor-ring] {
+    transition:
+      width var(--dur-slow) var(--ease-out-expo),
+      height var(--dur-slow) var(--ease-out-expo),
+      background-color var(--dur-slow) var(--ease-out-expo),
+      border-color var(--dur-slow) var(--ease-out-expo),
+      opacity var(--dur-base) var(--ease-standard);
+  }
+
+  [data-cursor-ring][data-open] {
+    width: 46px;
+    height: 46px;
+    background-color: rgb(from var(--c-accent) r g b / 0.1);
+    border-color: var(--c-accent);
+  }
+
+  [data-cursor-ring][data-press] {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Scroll reveal. The hidden state is CSS, not JS: adding it after paint
+     would show the element, hide it, then fade it back in. Marking a list
+     `data-reveal-group` opts its items in without per-item attributes. */
+  [data-reveal],
+  [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 700ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+      transform 700ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal][data-revealed],
+  [data-reveal-group] > [data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Without JS nothing would ever reveal, so the content stays visible. */
+  .no-js [data-reveal],
+  .no-js [data-reveal-group] > * {
+    opacity: 1;
+    transform: none;
   }
 
   .container-page {

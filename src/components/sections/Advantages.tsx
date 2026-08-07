@@ -9,7 +9,7 @@ export function Advantages({ t }: { t: Dictionary }) {
       title={t.advantages.title}
       intro={t.advantages.intro}
     >
-      <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <ul data-reveal-group className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {advantageIds.map((id) => {
           const item = t.advantages.items[id];
           return (

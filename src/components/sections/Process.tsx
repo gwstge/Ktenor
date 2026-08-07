@@ -16,7 +16,7 @@ export function Process({ t }: { t: Dictionary }) {
       title={t.process.title}
       intro={t.process.intro}
     >
-      <ol className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <ol data-reveal-group className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {processIds.map((id, index) => {
           const step = t.process.steps[id];
           return (

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { lockScroll, unlockScroll } from "@/lib/scroll";
 
 /** Below this the screen would flicker rather than read as an intro. */
 const MIN_VISIBLE = 900;
@@ -45,7 +46,7 @@ export function Intro() {
       } catch {
         /* private mode — the intro simply plays again next time */
       }
-      document.body.style.overflow = "";
+      unlockScroll();
       setStage("done");
       document.getElementById("main")?.focus({ preventScroll: true });
     };
@@ -60,7 +61,7 @@ export function Intro() {
       };
     }
 
-    document.body.style.overflow = "hidden";
+    lockScroll();
     setStage("running");
 
     // Three real milestones, one per bar.
@@ -98,7 +99,6 @@ export function Intro() {
 
     return () => {
       cancelled = true;
-      document.body.style.overflow = "";
     };
   }, []);
 

@@ -15,7 +15,7 @@ export function Services({ t }: { t: Dictionary }) {
       title={t.services.title}
       intro={t.services.intro}
     >
-      <ul className="grid gap-5 lg:grid-cols-2">
+      <ul data-reveal-group className="grid gap-5 lg:grid-cols-2">
         {services.map((service) => {
           const copy = t.services.items[service.id];
           return (

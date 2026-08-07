@@ -19,7 +19,7 @@ export function Section({ id, eyebrow, title, intro, children, className }: Prop
       className={`scroll-mt-[72px] py-[var(--spacing-section)] ${className ?? ""}`}
     >
       <div className="container-page">
-        <header className="max-w-[62ch]">
+        <header data-reveal className="max-w-[62ch]">
           <p className="flex items-center gap-3 text-caption uppercase tracking-[0.24em] text-text-muted">
             <span aria-hidden className="flex gap-[3px]">
               <span className="h-3 w-[3px] rounded-full bg-accent" />

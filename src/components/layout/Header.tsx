@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n";
 import { site } from "@/lib/site";
+import { lockScroll, unlockScroll } from "@/lib/scroll";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
@@ -36,8 +37,7 @@ export function Header({ locale, t }: Props) {
   useEffect(() => {
     if (!open) return;
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+    lockScroll();
 
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -64,7 +64,7 @@ export function Header({ locale, t }: Props) {
 
     document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = overflow;
+      unlockScroll();
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);

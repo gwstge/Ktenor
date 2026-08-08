@@ -2,8 +2,10 @@ import localFont from "next/font/local";
 
 /**
  * Self-hosted so the site makes zero third-party font requests.
- * Weights are trimmed to what the design actually uses — every extra
- * weight is dead payload on the critical path.
+ *
+ * Only 400 and 500 ship. Nothing in the design uses 600 or 700, and preloaded
+ * weights are paid for on the critical path whether or not a glyph is drawn —
+ * dropping the three unused files takes the font payload from 133 KB to 79 KB.
  */
 export const clashDisplay = localFont({
   variable: "--font-display",
@@ -13,8 +15,6 @@ export const clashDisplay = localFont({
   src: [
     { path: "./ClashDisplay-400.woff2", weight: "400", style: "normal" },
     { path: "./ClashDisplay-500.woff2", weight: "500", style: "normal" },
-    { path: "./ClashDisplay-600.woff2", weight: "600", style: "normal" },
-    { path: "./ClashDisplay-700.woff2", weight: "700", style: "normal" },
   ],
 });
 
@@ -26,6 +26,5 @@ export const satoshi = localFont({
   src: [
     { path: "./Satoshi-400.woff2", weight: "400", style: "normal" },
     { path: "./Satoshi-500.woff2", weight: "500", style: "normal" },
-    { path: "./Satoshi-700.woff2", weight: "700", style: "normal" },
   ],
 });

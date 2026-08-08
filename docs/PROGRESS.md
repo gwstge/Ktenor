@@ -46,15 +46,20 @@ Last updated: 2026-08-08
 - [x] Touch targets brought to the 44px floor
 - [x] Pushed to GitHub — `origin/main` is in sync
 
+- [x] Hero media re-encoded with `npm run media` (ffmpeg-static, dev only):
+      VP9 + H.264 at 1920 and 1280, poster to WebP. **5156 KB → 204 KB** for
+      the video and 1455 KB → 18 KB for the poster, at SSIM 0.993. Sources
+      live in `media-src/` and never ship
+- [x] Font payload 133 KB → 80 KB: 600 and 700 were preloaded but never drawn
+
 ## Resume here (next session)
 
-1. **Re-encode the hero video** — still the 5 MB original. Blocked, see below.
-   As a stopgap the Hero now serves the poster alone on viewports under 768px,
-   on save-data and on anything below 4g, so phones do not pay for it.
-2. **Connect the repo in Vercel** — owner action; the code is pushed and the
-   production build is clean.
-3. **Slovak proof-read** before launch.
-4. Then: the four demo projects.
+1. **Connect the repo in Vercel** — owner action; the code is pushed and the
+   production build is clean. Standard Vercel domain for now; the custom one
+   is a single env var later.
+2. **Slovak proof-read** — deferred by the owner, to be arranged before launch.
+3. Then: the four demo projects (cafe, store, dental, real estate). Structure
+   of each is to be agreed separately, one at a time.
 
 ### Note on verifying in the browser
 

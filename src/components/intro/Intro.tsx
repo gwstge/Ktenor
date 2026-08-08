@@ -145,7 +145,7 @@ export function Intro() {
 /** The hero poster is the heaviest thing above the fold; wait for it, not for a timer. */
 function decodePoster(): Promise<unknown> {
   const image = new Image();
-  image.src = "/media/hero-poster.png";
+  image.src = "/media/hero-poster.webp";
   return image.decode().catch(() => undefined);
 }
 

@@ -22,9 +22,8 @@ export function Hero({ t }: Props) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lite = document.documentElement.dataset.glass === "lite";
 
-    // Until the render is re-encoded it is a 5 MB file. Nobody on a phone or a
-    // metered connection should pay that for a background loop — the poster
-    // carries the screen perfectly well on its own.
+    // Even at 130–204 KB, a background loop is not worth it on a phone or a
+    // metered connection — the poster carries the screen on its own.
     const narrow = window.matchMedia("(max-width: 768px)").matches;
     const connection = (
       navigator as Navigator & {
@@ -40,7 +39,14 @@ export function Hero({ t }: Props) {
     const video = videoRef.current;
     if (!video) return;
 
-    video.src = "/media/hero.mp4";
+    // VP9 where it is supported, H.264 for the rest. The wider cut only goes
+    // to displays that can actually resolve it.
+    const wide =
+      window.matchMedia("(min-width: 1440px)").matches || window.devicePixelRatio > 1.5;
+    const width = wide ? 1920 : 1280;
+    const webm = video.canPlayType('video/webm; codecs="vp9"') !== "";
+
+    video.src = `/media/hero-${width}.${webm ? "webm" : "mp4"}`;
     video.load();
 
     const start = () => {
@@ -67,7 +73,7 @@ export function Hero({ t }: Props) {
       <div aria-hidden className="absolute inset-0 -z-10">
         <video
           ref={videoRef}
-          poster="/media/hero-poster.png"
+          poster="/media/hero-poster.webp"
           autoPlay
           muted
           loop

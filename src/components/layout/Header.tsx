@@ -79,7 +79,7 @@ export function Header({ locale, t }: Props) {
         <Link
           href={`/${locale}`}
           aria-label={site.name}
-          className="flex items-center gap-3 rounded-[var(--radius-xs)]"
+          className="flex min-h-11 items-center gap-3 rounded-[var(--radius-xs)]"
         >
           <Logo data-logo-target className="h-7 w-auto" />
           <span

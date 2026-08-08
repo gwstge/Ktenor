@@ -46,12 +46,12 @@ export function Footer({ locale, t }: Props) {
             <h2 className="text-caption uppercase tracking-[0.18em] text-text-muted">
               {t.footer.navTitle}
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-3 space-y-0">
               {nav.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="text-sm text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
+                    className="inline-flex min-h-11 items-center text-sm text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
                   >
                     {item.label}
                   </a>
@@ -64,11 +64,12 @@ export function Footer({ locale, t }: Props) {
             <h2 className="text-caption uppercase tracking-[0.18em] text-text-muted">
               {t.footer.contactTitle}
             </h2>
-            <ul className="mt-5 space-y-3 text-sm">
+            {/* Tight spacing: the rows already carry 44px of tap height. */}
+            <ul className="mt-3 space-y-0 text-sm">
               <li>
                 <a
                   href={`mailto:${site.contact.email}`}
-                  className="text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
+                  className="inline-flex min-h-11 items-center text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
                 >
                   {site.contact.email}
                 </a>
@@ -76,7 +77,7 @@ export function Footer({ locale, t }: Props) {
               <li>
                 <a
                   href={`tel:${site.contact.phone}`}
-                  className="text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
+                  className="inline-flex min-h-11 items-center text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
                 >
                   {site.contact.phoneDisplay}
                 </a>
@@ -86,7 +87,7 @@ export function Footer({ locale, t }: Props) {
                   href={site.contact.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
+                  className="inline-flex min-h-11 items-center text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
                 >
                   WhatsApp
                 </a>
@@ -94,7 +95,7 @@ export function Footer({ locale, t }: Props) {
                   href={site.contact.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
+                  className="inline-flex min-h-11 items-center text-text-secondary transition-colors duration-[var(--dur-base)] hover:text-text"
                 >
                   Instagram
                 </a>
@@ -118,7 +119,7 @@ export function Footer({ locale, t }: Props) {
           </p>
           <Link
             href={`/${locale}/privacy`}
-            className="transition-colors duration-[var(--dur-base)] hover:text-text-secondary"
+            className="inline-flex min-h-11 items-center transition-colors duration-[var(--dur-base)] hover:text-text-secondary"
           >
             {t.footer.privacy}
           </Link>

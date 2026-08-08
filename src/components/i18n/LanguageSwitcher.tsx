@@ -45,7 +45,7 @@ export function LanguageSwitcher({ current, label, className }: Props) {
             onClick={() => {
               document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
             }}
-            className={`rounded-[var(--radius-xs)] px-2.5 py-2 text-caption font-medium tracking-[0.12em] transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] ${
+            className={`grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-xs)] px-2 text-caption font-medium tracking-[0.12em] transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] ${
               active
                 ? "text-text"
                 : "text-text-muted hover:text-text-secondary"

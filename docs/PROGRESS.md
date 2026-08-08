@@ -57,9 +57,19 @@ Last updated: 2026-08-08
 1. **Connect the repo in Vercel** — owner action; the code is pushed and the
    production build is clean. Standard Vercel domain for now; the custom one
    is a single env var later.
-2. **Slovak proof-read** — deferred by the owner, to be arranged before launch.
-3. Then: the four demo projects (cafe, store, dental, real estate). Structure
+2. Then: the four demo projects (cafe, store, dental, real estate). Structure
    of each is to be agreed separately, one at a time.
+
+**Decided, do not raise again:** the owner has chosen not to have the Slovak
+copy proof-read by a native speaker. The assessment was given — the risk sits
+in the persuasive copy (hero headline, service descriptions, FAQ, principles)
+rather than in interface labels — and the decision is his.
+
+**Vercel:** `NEXT_PUBLIC_SITE_URL` must be set to the deployed URL, otherwise
+canonicals, sitemap, hreflang and the OG image all resolve against the
+placeholder domain. `ffmpeg-static` pulls an ~80 MB binary on install; if a
+build ever fails on it, move it out of the dependency list — the encoded media
+is committed and nothing at build time needs ffmpeg.
 
 ### Note on verifying in the browser
 

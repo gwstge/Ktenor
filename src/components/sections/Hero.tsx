@@ -21,7 +21,21 @@ export function Hero({ t }: Props) {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lite = document.documentElement.dataset.glass === "lite";
-    if (reduced || lite) return;
+
+    // Until the render is re-encoded it is a 5 MB file. Nobody on a phone or a
+    // metered connection should pay that for a background loop — the poster
+    // carries the screen perfectly well on its own.
+    const narrow = window.matchMedia("(max-width: 768px)").matches;
+    const connection = (
+      navigator as Navigator & {
+        connection?: { effectiveType?: string; saveData?: boolean };
+      }
+    ).connection;
+    const slowNetwork =
+      connection?.saveData === true ||
+      (connection?.effectiveType != null && !/4g/.test(connection.effectiveType));
+
+    if (reduced || lite || narrow || slowNetwork) return;
 
     const video = videoRef.current;
     if (!video) return;

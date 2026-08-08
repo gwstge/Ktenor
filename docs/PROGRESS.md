@@ -39,19 +39,22 @@ Last updated: 2026-08-08
 - [x] sitemap.xml with per-locale alternates, robots.txt
 - [x] OG image generated from the dictionary at build time
 
+- [x] `favicon.ico` verified (200, correct geometry)
+- [x] Responsive pass at 375 / 768 / 1440: no horizontal overflow, grids
+      reflow 1/2/3 columns, headline scales 44 → 96px, mobile menu toggles
+      `aria-expanded`, `aria-hidden` and `inert` correctly
+- [x] Touch targets brought to the 44px floor
+- [x] Pushed to GitHub — `origin/main` is in sync
+
 ## Resume here (next session)
 
-1. **Verify `favicon.ico`** — generated from the logo geometry but never seen
-   rendered. Load `/` and confirm the tab icon, then check `/favicon.ico`
-   returns 200 instead of the previous 404.
-2. **Responsive pass** — 375px, 768px, 1024px, 1440px and landscape. Nothing
-   below 375px has been checked at all yet. Watch the Hero: copy sits in the
-   right-hand column on desktop and needs to stack cleanly on narrow screens.
-3. **Re-encode the hero video** — still shipping the 5 MB original. Blocked,
-   see below.
-4. **Push to GitHub and first Vercel deploy.** Nothing has been pushed yet —
-   all seven commits are local only.
-5. Then: the four demo projects.
+1. **Re-encode the hero video** — still the 5 MB original. Blocked, see below.
+   As a stopgap the Hero now serves the poster alone on viewports under 768px,
+   on save-data and on anything below 4g, so phones do not pay for it.
+2. **Connect the repo in Vercel** — owner action; the code is pushed and the
+   production build is clean.
+3. **Slovak proof-read** before launch.
+4. Then: the four demo projects.
 
 ### Note on verifying in the browser
 

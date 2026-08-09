@@ -27,9 +27,24 @@ export function SmoothScroll() {
       (window as unknown as { lenis?: Lenis }).lenis = lenis;
     }
 
+    // The background drifts against the scroll. Written straight onto the
+    // element rather than into a custom property on :root — a variable there
+    // invalidates the style of every node that reads it, once per frame.
+    const field = document.querySelector<HTMLElement>("[data-field]");
+    let lastShift = -1;
+    const driftBackground = (scroll: number) => {
+      if (!field) return;
+      // Deliberately tiny. Depth should be felt, not watched.
+      const shift = Math.round(Math.min(scroll * 0.035, 90));
+      if (shift === lastShift) return;
+      lastShift = shift;
+      field.style.transform = `translate3d(0, ${-shift}px, 0)`;
+    };
+
     let frame = 0;
     const raf = (time: number) => {
       lenis.raf(time);
+      driftBackground(lenis.scroll);
       frame = requestAnimationFrame(raf);
     };
     frame = requestAnimationFrame(raf);

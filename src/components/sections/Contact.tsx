@@ -88,7 +88,7 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
             {t.contact.intro}
           </p>
 
-          <div className="glass mt-10 rounded-[var(--radius-md)] p-6">
+          <div className="surface mt-10 rounded-[var(--radius-md)] p-6">
             <p className="text-sm font-medium">{t.contact.notice.title}</p>
             <p className="mt-2 text-sm text-text-secondary">{t.contact.notice.body}</p>
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">

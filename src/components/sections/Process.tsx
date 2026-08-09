@@ -23,7 +23,7 @@ export function Process({ t }: { t: Dictionary }) {
             <li key={id}>
               <article
                 tabIndex={0}
-                className="group glass h-full rounded-[var(--radius-lg)] p-7 transition-[background-color,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:bg-[var(--glass-bg-hover)] focus-visible:-translate-y-1"
+                className="group surface surface-hover h-full rounded-[var(--radius-lg)] p-7 focus-visible:-translate-y-[2px]"
               >
                 <div className="flex items-center gap-4">
                   <span className="font-display text-caption tabular text-text-muted">

@@ -20,7 +20,7 @@ export function Services({ t }: { t: Dictionary }) {
           const copy = t.services.items[service.id];
           return (
             <li key={service.id}>
-              <article className="glass flex h-full flex-col rounded-[var(--radius-lg)] p-7 transition-colors duration-[var(--dur-slow)] hover:bg-[var(--glass-bg-hover)] sm:p-9">
+              <article className="surface surface-hover flex h-full flex-col rounded-[var(--radius-lg)] p-7 sm:p-9">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                   <h3 className="text-[length:var(--text-h3)]">{copy.name}</h3>
                   <p className="font-display text-[length:var(--text-h3)] tabular">

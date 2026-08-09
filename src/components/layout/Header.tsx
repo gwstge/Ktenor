@@ -95,7 +95,7 @@ export function Header({ locale, t }: Props) {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-[var(--radius-xs)] px-3.5 py-2 text-sm text-text-secondary transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:text-text"
+              className="link-rule rounded-[var(--radius-xs)] px-3.5 py-2 text-sm text-text-secondary transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:text-text"
             >
               {link.label}
             </a>

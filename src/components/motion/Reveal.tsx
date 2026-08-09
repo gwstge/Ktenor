@@ -3,14 +3,15 @@
 import { useEffect } from "react";
 
 /**
- * Scroll reveals with an IntersectionObserver and two CSS custom properties —
- * no animation library for something the platform already does well.
+ * Scroll reveals driven by an IntersectionObserver, which the browser can
+ * evaluate off the main thread.
  *
- * The hidden state lives in CSS, which means a reveal that never fires leaves
- * content permanently invisible. That is far worse than no animation, so this
- * never relies on the observer alone: an immediate pass catches whatever is
- * already on screen, a scroll listener acts as a second trigger, and a timeout
- * reveals anything still hidden in view. Any one of them is enough.
+ * The hidden state lives in CSS, so a reveal that never fires would leave
+ * content permanently invisible — worse than no animation at all. There is
+ * therefore a safety net, but it is deliberately cheap: it runs at most a few
+ * times a second, and it unbinds the moment the observer proves it works.
+ * The earlier version measured every pending element on every scroll event,
+ * which forced a synchronous layout dozens of times a second.
  */
 export function Reveal() {
   useEffect(() => {
@@ -32,50 +33,55 @@ export function Reveal() {
       return;
     }
 
-    const pending = new Set(targets);
-
-    const sweep = () => {
-      if (pending.size === 0) return;
-      const viewport = window.innerHeight;
-      pending.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        // No lower bound: anything already scrolled past has effectively been
-        // seen, and leaving it hidden behind the reader is the worst outcome.
-        if (rect.top < viewport * 0.92) {
-          reveal(el);
-          observer.unobserve(el);
-          pending.delete(el);
-        }
-      });
-    };
+    const pending = new Set<HTMLElement>(targets);
+    let observerWorks = false;
+    let netTimer = 0;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+        observerWorks = true;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
           reveal(entry.target);
           // One-shot: re-animating on the way back up reads as a glitch.
           observer.unobserve(entry.target);
           pending.delete(entry.target as HTMLElement);
-        });
+        }
+        if (pending.size === 0) stopNet();
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
     );
 
     targets.forEach((el) => observer.observe(el));
-    sweep();
 
-    window.addEventListener("scroll", sweep, { passive: true });
-    window.addEventListener("resize", sweep, { passive: true });
-    // Last resort: if neither the observer nor a scroll ever arrives, nothing
-    // on screen should still be invisible.
-    const failsafe = window.setTimeout(sweep, 2500);
+    // Safety net. No lower bound on the rect: anything already scrolled past
+    // has effectively been seen, and leaving it hidden behind the reader is
+    // the worst outcome.
+    const sweep = () => {
+      if (pending.size === 0) return stopNet();
+      const limit = window.innerHeight * 0.92;
+      for (const el of pending) {
+        if (el.getBoundingClientRect().top < limit) {
+          reveal(el);
+          observer.unobserve(el);
+          pending.delete(el);
+        }
+      }
+      // The observer is doing its job — stop second-guessing it.
+      if (observerWorks) stopNet();
+    };
+
+    function stopNet() {
+      window.clearInterval(netTimer);
+      netTimer = 0;
+    }
+
+    netTimer = window.setInterval(sweep, 400);
+    sweep();
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", sweep);
-      window.removeEventListener("resize", sweep);
-      window.clearTimeout(failsafe);
+      stopNet();
     };
   }, []);
 

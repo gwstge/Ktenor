@@ -16,7 +16,7 @@ export function Work({ t }: { t: Dictionary }) {
           const project = t.work.projects[id];
           return (
             <li key={id}>
-              <article className="group glass relative h-full overflow-hidden rounded-[var(--radius-lg)] p-7 transition-[background-color,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:bg-[var(--glass-bg-hover)] sm:p-9">
+              <article className="group surface surface-hover relative h-full overflow-hidden rounded-[var(--radius-lg)] p-7 sm:p-9">
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"

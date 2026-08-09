@@ -59,13 +59,30 @@ export function Hero({ t }: Props) {
     if (video.readyState >= 3) start();
     else video.addEventListener("canplay", start, { once: true });
 
+    // A 1080p loop keeps the decoder busy whether or not anyone can see it.
+    // Once the Hero is off screen there is nothing to decode for.
+    const section = video.closest("section");
+    const visibility =
+      section && typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            ([entry]) => {
+              if (entry.isIntersecting) void video.play().catch(() => {});
+              else video.pause();
+            },
+            { threshold: 0 },
+          )
+        : null;
+    if (section) visibility?.observe(section);
+
     return () => {
+      visibility?.disconnect();
       video.removeEventListener("canplay", start);
       video.removeAttribute("src");
     };
   }, []);
 
   return (
+    <>
     <section
       data-theme="dark"
       className="relative isolate flex min-h-[calc(100dvh-72px)] items-center overflow-hidden bg-bg text-text"
@@ -125,5 +142,15 @@ export function Hero({ t }: Props) {
         </div>
       </div>
     </section>
+
+    {/* The Hero holds its dark treatment in both themes, so in light mode its
+        bottom edge would meet an off-white page as a hard line. This feathers
+        it. In dark mode it is invisible by construction. */}
+    <div
+      aria-hidden
+      className="-mt-px h-28"
+      style={{ background: "linear-gradient(to bottom, #08090d, transparent)" }}
+    />
+    </>
   );
 }

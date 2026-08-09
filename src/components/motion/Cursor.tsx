@@ -7,7 +7,11 @@ import { useEffect, useRef, useState } from "react";
  * and opens over anything interactive. No trail, no magnetism, no labels —
  * an over-eager cursor is the fastest way to make a premium page feel cheap.
  *
- * Only on devices with a real pointer, and never under reduced motion.
+ * Two things keep it free during scroll. The animation loop stops as soon as
+ * the ring has caught up and only restarts on movement, so a still pointer
+ * costs nothing — and a pointer is still for most of a scroll. Hover state
+ * comes from pointerover/pointerout delegation rather than a `closest()` walk
+ * on every single move event.
  */
 export function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -22,10 +26,42 @@ export function Cursor() {
     setEnabled(true);
     document.documentElement.dataset.cursor = "custom";
 
+    const interactive =
+      'a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])';
+
     const pointer = { x: innerWidth / 2, y: innerHeight / 2 };
     const ring = { ...pointer };
     let frame = 0;
     let visible = false;
+
+    const tick = () => {
+      const dx = pointer.x - ring.x;
+      const dy = pointer.y - ring.y;
+
+      // Settled: park the loop until something moves again.
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        ring.x = pointer.x;
+        ring.y = pointer.y;
+        frame = 0;
+        return;
+      }
+
+      // Light easing — enough to feel physical, not enough to feel laggy.
+      ring.x += dx * 0.18;
+      ring.y += dy * 0.18;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%)`;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    const wake = () => {
+      if (frame === 0) frame = requestAnimationFrame(tick);
+    };
 
     const onMove = (event: PointerEvent) => {
       pointer.x = event.clientX;
@@ -36,11 +72,18 @@ export function Cursor() {
         dotRef.current?.style.setProperty("opacity", "1");
         ringRef.current?.style.setProperty("opacity", "1");
       }
+      wake();
+    };
 
-      const interactive = (event.target as HTMLElement | null)?.closest?.(
-        'a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])',
-      );
-      ringRef.current?.toggleAttribute("data-open", Boolean(interactive));
+    const onOver = (event: PointerEvent) => {
+      const hit = (event.target as HTMLElement | null)?.closest?.(interactive);
+      if (hit) ringRef.current?.setAttribute("data-open", "");
+    };
+
+    const onOut = (event: PointerEvent) => {
+      const left = (event.target as HTMLElement | null)?.closest?.(interactive);
+      const entering = (event.relatedTarget as HTMLElement | null)?.closest?.(interactive);
+      if (left && !entering) ringRef.current?.removeAttribute("data-open");
     };
 
     const onLeave = () => {
@@ -49,32 +92,21 @@ export function Cursor() {
       ringRef.current?.style.setProperty("opacity", "0");
     };
 
-    const onDown = () => ringRef.current?.toggleAttribute("data-press", true);
-    const onUp = () => ringRef.current?.toggleAttribute("data-press", false);
-
-    const tick = () => {
-      // Light easing — enough to feel physical, not enough to feel laggy.
-      ring.x += (pointer.x - ring.x) * 0.18;
-      ring.y += (pointer.y - ring.y) * 0.18;
-
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`;
-      }
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%)`;
-      }
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
+    const onDown = () => ringRef.current?.setAttribute("data-press", "");
+    const onUp = () => ringRef.current?.removeAttribute("data-press");
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerover", onOver, { passive: true });
+    document.addEventListener("pointerout", onOut, { passive: true });
     document.addEventListener("pointerleave", onLeave);
-    window.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
 
     return () => {
-      cancelAnimationFrame(frame);
+      if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerout", onOut);
       document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);

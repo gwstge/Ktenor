@@ -77,6 +77,13 @@ export default async function LocaleLayout({
         <ThemeScript />
       </head>
       <body className="flex min-h-dvh flex-col">
+        {/* Two fixed layers behind everything: the gradient field and a grain
+            pass over it. Neither ever repaints during scroll. */}
+        <div aria-hidden className="bg-field" data-field>
+          <div data-layer="dark" />
+          <div data-layer="light" />
+        </div>
+        <div aria-hidden className="bg-grain" />
         <a
           href="#main"
           className="glass sr-only rounded-[var(--radius-sm)] px-4 py-2 focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[var(--z-modal)]"

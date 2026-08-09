@@ -14,7 +14,7 @@ export function Advantages({ t }: { t: Dictionary }) {
           const item = t.advantages.items[id];
           return (
             <li key={id}>
-              <article className="glass h-full rounded-[var(--radius-lg)] p-7 transition-colors duration-[var(--dur-slow)] hover:bg-[var(--glass-bg-hover)]">
+              <article className="surface surface-hover h-full rounded-[var(--radius-lg)] p-7">
                 <span aria-hidden className="flex gap-1">
                   <span className="h-4 w-[3px] rounded-full bg-accent" />
                   <span className="h-4 w-[3px] rounded-full bg-accent-mid" />

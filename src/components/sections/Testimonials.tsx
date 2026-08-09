@@ -25,7 +25,7 @@ export function Testimonials({ t }: { t: Dictionary }) {
       <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {testimonials.map((item) => (
           <li key={item.id}>
-            <figure className="glass flex h-full flex-col rounded-[var(--radius-lg)] p-7">
+            <figure className="surface flex h-full flex-col rounded-[var(--radius-lg)] p-7">
               <span aria-hidden className="flex gap-1">
                 <span className="h-4 w-[3px] rounded-full bg-accent" />
                 <span className="h-4 w-[3px] rounded-full bg-accent-mid" />

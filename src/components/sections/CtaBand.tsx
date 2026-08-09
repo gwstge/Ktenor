@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n";
+import { Button } from "@/components/ui/Button";
 
 /** Last chance to act before the footer, and the only place the "fewer
  *  projects, full attention" promise is made. */
@@ -22,12 +23,11 @@ export function CtaBand({ t }: { t: Dictionary }) {
           <p className="mx-auto mt-6 max-w-[52ch] text-[length:var(--text-lead)] text-text-secondary">
             {t.cta.description}
           </p>
-          <a
-            href="#contact"
-            className="mt-10 inline-block rounded-[var(--radius-sm)] bg-text px-8 py-4 text-sm font-medium text-bg transition-[background-color,transform] duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-silver active:scale-[0.98]"
-          >
-            {t.actions.startProject}
-          </a>
+          <div className="mt-10 flex justify-center">
+            <Button href="#contact" block>
+              {t.actions.startProject}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

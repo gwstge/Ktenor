@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { defaultLocale, isLocale } from "@/i18n/config";
 import { site } from "@/lib/site";
+import { Button } from "@/components/ui/Button";
 import en from "@/i18n/dictionaries/en";
 import sk from "@/i18n/dictionaries/sk";
 
@@ -42,24 +43,13 @@ export default function NotFound() {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              href={`/${locale}`}
-              className="rounded-[var(--radius-sm)] bg-text px-7 py-4 text-sm font-medium text-bg transition-[background-color,transform] duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-silver active:scale-[0.98]"
-            >
-              {t.actions.backHome}
-            </Link>
-            <Link
-              href={`/${locale}#services`}
-              className="glass rounded-[var(--radius-sm)] px-7 py-4 text-sm font-medium transition-colors duration-[var(--dur-base)] hover:bg-[var(--glass-bg-hover)]"
-            >
+            <Button href={`/${locale}`}>{t.actions.backHome}</Button>
+            <Button href={`/${locale}#services`} variant="secondary">
               {t.notFound.services}
-            </Link>
-            <Link
-              href={`/${locale}#work`}
-              className="glass rounded-[var(--radius-sm)] px-7 py-4 text-sm font-medium transition-colors duration-[var(--dur-base)] hover:bg-[var(--glass-bg-hover)]"
-            >
+            </Button>
+            <Button href={`/${locale}#work`} variant="secondary">
               {t.notFound.work}
-            </Link>
+            </Button>
           </div>
 
           <p className="mt-10 text-sm text-text-muted">

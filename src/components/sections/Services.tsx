@@ -1,6 +1,7 @@
 import type { Dictionary } from "@/i18n";
 import { addonIds, addonPrices, services } from "@/content/services";
 import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 import { OrderButton } from "./OrderButton";
 
 /**
@@ -71,12 +72,9 @@ export function Services({ t }: { t: Dictionary }) {
                   {t.services.enquiry.description}
                 </p>
               </div>
-              <a
-                href="#contact"
-                className="rounded-[var(--radius-sm)] bg-text px-7 py-4 text-sm font-medium text-bg transition-[background-color,transform] duration-[var(--dur-base)] hover:bg-silver active:scale-[0.98]"
-              >
+              <Button href="#contact" block className="shrink-0">
                 {t.actions.tellMeMore}
-              </a>
+              </Button>
             </div>
           </article>
         </li>

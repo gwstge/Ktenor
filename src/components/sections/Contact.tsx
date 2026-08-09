@@ -5,6 +5,7 @@ import type { Dictionary } from "@/i18n";
 import type { Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
 import { services, type ServiceId } from "@/content/services";
+import { Button } from "@/components/ui/Button";
 import { SELECT_SERVICE_EVENT } from "./OrderButton";
 
 type Errors = Partial<Record<"name" | "contact" | "email" | "service" | "consent", string>>;
@@ -235,12 +236,9 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
           </div>
 
           <div className="flex flex-wrap items-center gap-5">
-            <button
-              type="submit"
-              className="cursor-pointer rounded-[var(--radius-sm)] bg-text px-8 py-4 text-sm font-medium text-bg transition-[background-color,transform] duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-silver active:scale-[0.98]"
-            >
+            <Button type="submit" block>
               {t.contact.submit}
-            </button>
+            </Button>
             {attempted && Object.keys(errors).length === 0 ? (
               <p role="status" className="text-sm text-text-muted">
                 {t.contact.notice.title}

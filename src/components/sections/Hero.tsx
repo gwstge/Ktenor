@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n";
+import { Button } from "@/components/ui/Button";
 
 type Props = { t: Dictionary };
 
@@ -126,18 +127,14 @@ export function Hero({ t }: Props) {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#contact"
-              className="rounded-[var(--radius-sm)] bg-text px-7 py-4 text-sm font-medium text-bg transition-[background-color,transform] duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-silver active:scale-[0.98]"
-            >
-              {t.actions.startProject}
-            </a>
-            <a
+            <Button href="#contact">{t.actions.startProject}</Button>
+            <Button
               href="#work"
-              className="glass rounded-[var(--radius-sm)] px-7 py-4 text-sm font-medium transition-[background-color,transform] duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:bg-[var(--glass-bg-hover)] active:scale-[0.98]"
+              variant="secondary"
+              className="glass border-0 bg-[var(--glass-bg)] hover:bg-[var(--glass-bg-hover)]"
             >
               {t.actions.seeWork}
-            </a>
+            </Button>
           </div>
         </div>
       </div>

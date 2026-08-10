@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { site } from "@/lib/site";
+import { getDictionary } from "@/i18n";
+import type { ServiceId } from "@/content/services";
 import {
   clean,
   isBudgetKey,
@@ -169,33 +171,52 @@ async function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
   return response.ok;
 }
 
-function rows(enquiry: CleanEnquiry) {
-  return Object.entries({
-    Name: enquiry.name,
-    Email: enquiry.email || "—",
-    Phone: enquiry.phone || "—",
-    Service: enquiry.service,
-    Budget: enquiry.budget || "—",
-    Timeline: enquiry.timeline || "—",
-    Language: enquiry.locale,
-  })
+function rows(pairs: [string, string][]) {
+  return pairs
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:6px 16px 6px 0;color:#767e8f;font-size:13px;white-space:nowrap">${label}</td><td style="padding:6px 0;color:#eeeff4;font-size:14px">${escapeHtml(String(value))}</td></tr>`,
+        `<tr><td style="padding:6px 16px 6px 0;color:#767e8f;font-size:13px;white-space:nowrap">${label}</td><td style="padding:6px 0;color:#eeeff4;font-size:14px">${escapeHtml(value)}</td></tr>`,
     )
     .join("");
 }
 
+/**
+ * The lead notification. Every field the visitor could have filled in is
+ * shown — the point of this email is that the owner never has to log in
+ * anywhere to see the full picture. Service and budget are resolved to their
+ * display names via the same dictionary the site itself uses, so the owner
+ * reads "Landing Page" and "€500 – 1 500" rather than the raw ids the form
+ * submits ("landing", "500to1500").
+ */
 async function notifyOwner(enquiry: CleanEnquiry) {
   const to = process.env.CONTACT_TO_EMAIL || site.contact.email;
   const replyTo = enquiry.email || undefined;
   const message = enquiry.message;
+
+  const t = await getDictionary(enquiry.locale);
+  const serviceLabel = t.services.items[enquiry.service as ServiceId]?.name ?? enquiry.service;
+  const budgetLabel = enquiry.budget
+    ? (t.contact.budgets as Record<string, string>)[enquiry.budget] ?? enquiry.budget
+    : "—";
+
   const html = `
 <div style="background:#0b0c11;padding:32px;font-family:-apple-system,Segoe UI,sans-serif">
   <div style="max-width:560px;margin:0 auto;background:#101319;border:1px solid rgba(238,239,244,.1);border-radius:14px;padding:28px">
+    <div style="display:flex;gap:5px;margin-bottom:20px">
+      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#6e8fc4"></span>
+      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#46618f"></span>
+      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#2a3a55"></span>
+    </div>
     <p style="margin:0 0 4px;color:#6e8fc4;font-size:12px;letter-spacing:.18em;text-transform:uppercase">New enquiry</p>
     <h1 style="margin:0 0 24px;color:#eeeff4;font-size:22px;font-weight:600">${escapeHtml(enquiry.name)}</h1>
-    <table style="border-collapse:collapse;width:100%">${rows(enquiry)}</table>
+    <table style="border-collapse:collapse;width:100%">${rows([
+      ["Email", enquiry.email || "—"],
+      ["Phone", enquiry.phone || "—"],
+      ["Service", serviceLabel],
+      ["Budget", budgetLabel],
+      ["Timeline", enquiry.timeline || "—"],
+      ["Language", enquiry.locale.toUpperCase()],
+    ])}</table>
     ${
       message
         ? `<div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(238,239,244,.1)">
@@ -209,7 +230,7 @@ async function notifyOwner(enquiry: CleanEnquiry) {
 
   return sendEmail({
     to,
-    subject: `Enquiry — ${enquiry.name} (${enquiry.service})`,
+    subject: `Enquiry — ${enquiry.name} · ${serviceLabel}`,
     html,
     ...(replyTo ? { reply_to: replyTo } : {}),
   });
@@ -217,15 +238,15 @@ async function notifyOwner(enquiry: CleanEnquiry) {
 
 const ACK = {
   sk: {
-    subject: "Ďakujem za správu — Ktenor",
-    heading: "Vaša správa dorazila.",
-    body: "Ďakujem za záujem. Ozvem sa vám osobne, spravidla do jedného pracovného dňa. Ak je to naliehavé, napíšte mi priamo na WhatsApp alebo zavolajte.",
+    subject: "Ďakujem, že ste oslovili Ktenor",
+    heading: "Ďakujem, že ste oslovili Ktenor.",
+    body: "Vaša požiadavka bola prijatá. Pozriem sa na ňu a ozvem sa vám do jedného pracovného dňa.",
     signoff: "Ktenor",
   },
   en: {
-    subject: "Thanks for getting in touch — Ktenor",
-    heading: "Your message arrived.",
-    body: "Thank you for your interest. I will get back to you personally, usually within one working day. If it is urgent, message me on WhatsApp or call directly.",
+    subject: "Thanks for reaching out to Ktenor",
+    heading: "Thanks for reaching out to Ktenor.",
+    body: "Your request has been received. I'll review it and get back to you within 1 business day.",
     signoff: "Ktenor",
   },
 } as const;

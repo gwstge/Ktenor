@@ -1,8 +1,10 @@
 # Wiring up the enquiry form
 
-The form and the endpoint are finished. What remains is giving them two
-destinations. Until at least one is configured the endpoint answers `502` and
-the visitor is told plainly that sending failed — it never pretends.
+The form and the endpoint are finished. What remains is giving them a
+destination. Email (section 1) is enough on its own — the spreadsheet
+(section 2) is an optional second copy, not a requirement. Until at least one
+is configured the endpoint answers `502` and the visitor is told plainly that
+sending failed — it never pretends.
 
 Secrets are entered by the owner, never committed. `.env.local` is ignored by
 git.
@@ -36,7 +38,10 @@ optional — without it the address in `src/lib/site.ts` is used.
 
 ---
 
-## 2. Spreadsheet — Google Sheets
+## 2. Spreadsheet — Google Sheets (optional)
+
+Skip this section entirely if email alone is enough. Nothing else in this
+document depends on it.
 
 1. Create a spreadsheet. First row, exactly these headers:
 
@@ -106,11 +111,10 @@ Submit the form on the live site with a real address. Expect:
 - the success panel under the button
 - an email in the inbox, with **Reply** already addressed to the sender
 - a confirmation in the sender's inbox
-- a new row in the spreadsheet
+- a new row in the spreadsheet, if that step was set up
 
-If one destination is silent and the other worked, the enquiry is still safe —
-that is the point of having two. Check the Vercel function logs for
-`/api/contact` to see which one refused.
+If a configured destination stays silent, check the Vercel function logs for
+`/api/contact` to see what it reported.
 
 ---
 
@@ -119,8 +123,8 @@ that is the point of having two. Check the Vercel function logs for
 | Situation | What happens |
 |---|---|
 | Neither destination configured | `502`, visitor sees the failure state |
-| Email fails, sheet works | Success — the enquiry is recorded |
-| Sheet fails, email works | Success — the enquiry is in the inbox |
+| Only email configured, and it works | Success — this is the normal case |
+| Both configured, one fails | Success — the enquiry survived through the other |
 | Auto-reply fails | Success. It is secondary and never surfaces as an error |
 | Honeypot filled, or form completed in under 2.5s | Plain `200`, nothing delivered |
 | More than 5 attempts from one IP in 10 minutes | `429`, visitor is asked to wait or contact directly |

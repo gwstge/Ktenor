@@ -32,8 +32,8 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
           </h1>
           <p style={{ color: "#a2a8b6", lineHeight: 1.6, marginTop: 16 }}>
             Nastala neočakávaná chyba. Skúste to znova alebo mi napíšte na{" "}
-            <a href="mailto:ktenorstudios@gmail.com" style={{ color: "#6e8fc4" }}>
-              ktenorstudios@gmail.com
+            <a href="mailto:ktenorstudio@gmail.com" style={{ color: "#6e8fc4" }}>
+              ktenorstudio@gmail.com
             </a>
             .
           </p>

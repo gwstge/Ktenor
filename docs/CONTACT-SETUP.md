@@ -30,7 +30,7 @@ git.
 ```
 RESEND_API_KEY=re_xxxxxxxxxxxx
 CONTACT_FROM_EMAIL=Ktenor <hello@ktenor.online>
-CONTACT_TO_EMAIL=ktenorstudios@gmail.com
+CONTACT_TO_EMAIL=ktenorstudio@gmail.com
 ```
 
 `CONTACT_FROM_EMAIL` must be on the verified domain. `CONTACT_TO_EMAIL` is

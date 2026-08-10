@@ -203,7 +203,7 @@ responsiveness, SEO from day one and an individual approach.
 
 ## 11. Contact
 
-- Email `ktenorstudios@gmail.com`
+- Email `ktenorstudio@gmail.com`
 - Phone `+421 911 608 486` — also WhatsApp via `wa.me`
 - Instagram `@kamoshitaya`
 - **No Telegram anywhere on the site**

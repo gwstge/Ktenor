@@ -34,7 +34,7 @@ export const site = {
   ),
 
   contact: {
-    email: "ktenorstudios@gmail.com",
+    email: "ktenorstudio@gmail.com",
     /** E.164, used for tel: and wa.me */
     phone: "+421911608486",
     phoneDisplay: "+421 911 608 486",

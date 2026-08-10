@@ -396,7 +396,15 @@ function PhoneField({
           aria-label={t.contact.fields.dialCodeLabel}
           value={dialCode}
           onChange={(e) => setDialCode(e.target.value)}
-          className="w-auto shrink-0 cursor-pointer border-0 bg-transparent py-3.5 pl-3.5 pr-1 text-body text-text outline-none"
+          // A transparent background here (matching the wrapper's own
+          // bg-bg-raised only visually) leaves the browser unable to tell
+          // what's behind the control, and Chromium falls back to a plain
+          // white native popup for the option list regardless of the site's
+          // dark theme. An opaque background of the exact same colour looks
+          // identical but gives the popup something real to theme itself
+          // against.
+          style={{ colorScheme: "inherit" }}
+          className="w-auto shrink-0 cursor-pointer border-0 bg-bg-raised py-3.5 pl-3.5 pr-1 text-body text-text outline-none"
         >
           {dialCodes.map((d) => (
             <option key={d.id} value={d.code}>

@@ -331,10 +331,17 @@ const sk: Dictionary = {
       link: "Ochrana osobných údajov",
     },
     submit: "Odoslať dopyt",
-    notice: {
-      title: "Tento formulár zatiaľ nie je pripojený.",
-      body: "Odosielanie sa práve nastavuje. Kým nebude v prevádzke, ozvite sa mi priamo — odpovedám rýchlo.",
+    sending: "Odosielam…",
+    success: {
+      title: "Ďakujem — vaša správa dorazila.",
+      body: "Odpovedám osobne, spravidla do jedného pracovného dňa. Ak ste nechali e-mail, potvrdenie je už na ceste k vám.",
     },
+    failure: {
+      title: "Odoslanie zlyhalo.",
+      body: "Niečo sa pokazilo cestou. Skúste to znova alebo ma kontaktujte priamo — oboje končí na rovnakom mieste.",
+      retry: "Skúsiť znova",
+    },
+    rateLimit: "Príliš veľa pokusov za krátky čas. Počkajte pár minút alebo ma kontaktujte priamo.",
     errors: {
       name: "Zadajte prosím svoje meno.",
       contact: "Nechajte prosím e-mail alebo telefón.",

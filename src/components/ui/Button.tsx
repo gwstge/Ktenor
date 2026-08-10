@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   /** Full width below sm — the right default for a lone CTA on a phone. */
   block?: boolean;
+  disabled?: boolean;
 };
 
 /**
@@ -46,8 +47,11 @@ export function Button({
   children,
   className,
   block,
+  disabled,
 }: Props) {
-  const classes = `${base} ${variants[variant]} ${block ? "w-full sm:w-auto" : ""} ${className ?? ""}`;
+  const classes = `${base} ${variants[variant]} ${block ? "w-full sm:w-auto" : ""} ${
+    disabled ? "pointer-events-none opacity-60" : ""
+  } ${className ?? ""}`;
 
   if (href) {
     const external = href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || href.startsWith("http");
@@ -66,7 +70,7 @@ export function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button type={type} onClick={onClick} disabled={disabled} className={classes}>
       {children}
     </button>
   );

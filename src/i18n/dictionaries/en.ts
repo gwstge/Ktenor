@@ -329,10 +329,17 @@ const en = {
       link: "Privacy Policy",
     },
     submit: "Send enquiry",
-    notice: {
-      title: "This form is not connected yet.",
-      body: "Sending is being wired up. Until it is live, reach me directly — I answer both quickly.",
+    sending: "Sending…",
+    success: {
+      title: "Thank you — your enquiry is with me.",
+      body: "I reply personally, usually within one working day. If you left an email address, a confirmation is already on its way to it.",
     },
+    failure: {
+      title: "That did not go through.",
+      body: "Something failed on the way. Try again, or reach me directly — both land in the same place.",
+      retry: "Try again",
+    },
+    rateLimit: "Too many attempts in a short time. Wait a few minutes, or contact me directly.",
     errors: {
       name: "Please enter your name.",
       contact: "Please leave an email or a phone number.",

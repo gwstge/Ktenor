@@ -5,24 +5,25 @@ import type { Dictionary } from "@/i18n";
 import type { Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
 import { services, type ServiceId } from "@/content/services";
+import { budgetKeys, validateEnquiry, type EnquiryErrorKey } from "@/lib/enquiry";
 import { Button } from "@/components/ui/Button";
 import { SELECT_SERVICE_EVENT } from "./OrderButton";
 
-type Errors = Partial<Record<"name" | "contact" | "email" | "service" | "consent", string>>;
-
-const budgetKeys = ["under500", "500to1500", "1500to3000", "over3000"] as const;
+type Errors = Partial<Record<EnquiryErrorKey, string>>;
+type Status = "idle" | "sending" | "sent" | "failed" | "throttled";
 
 /**
- * The form validates and behaves like the real thing, but there is no backend
- * yet — so it never claims an enquiry was sent. The notice says so plainly and
- * hands the visitor a working way to reach out instead.
+ * Validation rules come from the shared module, so the instant feedback here
+ * and the authoritative check on the server cannot drift apart.
  */
 export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
   const uid = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const serviceRef = useRef<HTMLSelectElement>(null);
   const [errors, setErrors] = useState<Errors>({});
-  const [attempted, setAttempted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  /** Used to spot a form completed faster than a human could read it. */
+  const startedAt = useRef(Date.now());
 
   // A service card was clicked — preselect it and let the anchor do the scroll.
   useEffect(() => {
@@ -37,39 +38,69 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
     return () => window.removeEventListener(SELECT_SERVICE_EVENT, onSelect);
   }, []);
 
-  function validate(form: HTMLFormElement): Errors {
+  function read(form: HTMLFormElement) {
     const data = new FormData(form);
-    const name = String(data.get("name") ?? "").trim();
-    const email = String(data.get("email") ?? "").trim();
-    const phone = String(data.get("phone") ?? "").trim();
-    const service = String(data.get("service") ?? "");
-    const consent = data.get("consent");
-
-    const next: Errors = {};
-    if (!name) next.name = t.contact.errors.name;
-    if (!email && !phone) next.contact = t.contact.errors.contact;
-    else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
-      next.email = t.contact.errors.email;
-    if (!service) next.service = t.contact.errors.service;
-    if (!consent) next.consent = t.contact.errors.consent;
-    return next;
+    const get = (key: string) => String(data.get(key) ?? "").trim();
+    return {
+      name: get("name"),
+      email: get("email"),
+      phone: get("phone"),
+      service: get("service"),
+      budget: get("budget"),
+      timeline: get("timeline"),
+      message: get("message"),
+      consent: data.get("consent") === "on",
+      company: get("company"),
+      locale,
+      startedAt: startedAt.current,
+    };
   }
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setAttempted(true);
-    const next = validate(event.currentTarget);
+    if (status === "sending") return;
+
+    const form = event.currentTarget;
+    const values = read(form);
+    const keys = validateEnquiry(values);
+
+    const next: Errors = {};
+    for (const key of keys) next[key] = t.contact.errors[key];
     setErrors(next);
 
-    const firstInvalid = Object.keys(next)[0];
-    if (firstInvalid) {
-      const field = event.currentTarget.querySelector<HTMLElement>(
-        `[name="${firstInvalid === "contact" ? "email" : firstInvalid}"]`,
-      );
-      field?.focus();
+    if (keys.length > 0) {
+      // Focus the first field that needs attention; "contact" is reported on
+      // the email input because that is where the pair starts.
+      const first = keys[0] === "contact" ? "email" : keys[0];
+      form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
     }
-    // Nothing is submitted: there is no endpoint, and pretending otherwise
-    // would lose a real enquiry.
+
+    setStatus("sending");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (response.status === 429) {
+        setStatus("throttled");
+        return;
+      }
+      if (!response.ok) {
+        setStatus("failed");
+        return;
+      }
+
+      form.reset();
+      startedAt.current = Date.now();
+      setStatus("sent");
+    } catch {
+      // Offline, blocked, or the request never left — all the same to the
+      // visitor, and all recoverable by contacting directly.
+      setStatus("failed");
+    }
   }
 
   return (
@@ -94,8 +125,7 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
           </p>
 
           <div className="surface mt-10 rounded-[var(--radius-md)] p-6">
-            <p className="text-sm font-medium">{t.contact.notice.title}</p>
-            <p className="mt-2 text-sm text-text-secondary">{t.contact.notice.body}</p>
+            <p className="text-sm font-medium">{t.contact.direct}</p>
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
               <a
                 href={`mailto:${site.contact.email}`}
@@ -122,6 +152,13 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
         </div>
 
         <form ref={formRef} noValidate onSubmit={onSubmit} className="grid gap-6">
+          {/* Bot trap. Off-screen rather than display:none, which some bots
+              know to skip, and hidden from assistive tech either way. */}
+          <div aria-hidden className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+            <label htmlFor={`${uid}-company`}>Company</label>
+            <input id={`${uid}-company`} name="company" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
+
           <Field
             id={`${uid}-name`}
             name="name"
@@ -239,15 +276,47 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
             <FieldError id={`${uid}-consent-error`} message={errors.consent} />
           </div>
 
-          <div className="flex flex-wrap items-center gap-5">
-            <Button type="submit" block>
-              {t.contact.submit}
+          <div className="grid gap-5">
+            <Button type="submit" block disabled={status === "sending"}>
+              {status === "sending" ? t.contact.sending : t.contact.submit}
             </Button>
-            {attempted && Object.keys(errors).length === 0 ? (
-              <p role="status" className="text-sm text-text-muted">
-                {t.contact.notice.title}
-              </p>
-            ) : null}
+
+            {/* One live region for every outcome, so a screen reader announces
+                the result without the focus being moved out from under anyone. */}
+            <div aria-live="polite" aria-atomic="true">
+              {status === "sent" ? (
+                <div className="surface rounded-[var(--radius-md)] p-5">
+                  <p className="flex items-center gap-2.5 text-sm font-medium">
+                    <span aria-hidden className="flex gap-1">
+                      <span className="h-4 w-1 rounded-full bg-accent" />
+                      <span className="h-4 w-1 rounded-full bg-accent-mid" />
+                      <span className="h-4 w-1 rounded-full bg-accent" />
+                    </span>
+                    {t.contact.success.title}
+                  </p>
+                  <p className="mt-2 text-sm text-text-secondary">
+                    {t.contact.success.body}
+                  </p>
+                </div>
+              ) : null}
+
+              {status === "failed" ? (
+                <div className="rounded-[var(--radius-md)] border border-[var(--c-danger-border)] bg-[var(--c-danger-bg)] p-5">
+                  <p className="text-sm font-medium text-[var(--c-danger)]">
+                    {t.contact.failure.title}
+                  </p>
+                  <p className="mt-2 text-sm text-text-secondary">
+                    {t.contact.failure.body}
+                  </p>
+                </div>
+              ) : null}
+
+              {status === "throttled" ? (
+                <div className="rounded-[var(--radius-md)] border border-[var(--c-danger-border)] bg-[var(--c-danger-bg)] p-5">
+                  <p className="text-sm text-text-secondary">{t.contact.rateLimit}</p>
+                </div>
+              ) : null}
+            </div>
           </div>
         </form>
       </div>

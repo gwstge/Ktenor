@@ -1,0 +1,20 @@
+
+> ktenor@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.0 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://26.218.14.90:3000
+✓ Ready in 487ms
+✓ Running next.config.ts took 43ms
+
+ GET /sk 200 in 999ms (next.js: 97ms, proxy.ts: 150ms, generate-params: 468ms, application-code: 283ms)
+ POST /api/contact 400 in 166ms (next.js: 142ms, application-code: 24ms)
+ POST /api/contact 502 in 8ms (next.js: 4ms, application-code: 5ms)
+ POST /api/contact 400 in 7ms (next.js: 1.9ms, application-code: 5ms)
+ POST /api/contact 502 in 6ms (next.js: 2ms, application-code: 4ms)
+ POST /api/contact 502 in 6ms (next.js: 1.9ms, application-code: 4ms)
+ POST /api/contact 429 in 7ms (next.js: 1.7ms, application-code: 5ms)
+ POST /api/contact 429 in 6ms (next.js: 2.0ms, application-code: 4ms)
+ POST /api/contact 429 in 7ms (next.js: 2ms, application-code: 4ms)
+ POST /api/contact 429 in 7ms (next.js: 2ms, application-code: 5ms)

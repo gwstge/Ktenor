@@ -35,8 +35,10 @@ const en: PrivacyDoc = {
     {
       heading: "The contact form",
       body: [
-        "The enquiry form is not connected to any backend yet, so nothing you type into it is transmitted or stored anywhere. It is marked as such on the page.",
-        "Once it is live, it will send only what you enter — your name, the contact detail you provide, the service you select and anything you write in the message — directly to me, for the sole purpose of replying to your enquiry. This document will be updated at the same time.",
+        "When you submit the enquiry form, it sends exactly what you filled in: your name, the email address and phone number you chose to give, the service you selected, the budget range and timeline if you set them, and your message. Nothing else is collected, and nothing is taken from your device beyond what you typed.",
+        "That information is used for one purpose — replying to your enquiry and carrying out any work that follows from it. It is emailed to me and recorded in a private spreadsheet so an enquiry cannot be lost if an email fails to arrive. If you leave an email address, an automatic confirmation is sent back to you.",
+        "Two service providers handle this on my behalf: Resend delivers the email, and Google Sheets stores the record. Neither uses your data for their own purposes. Enquiries are kept only as long as they are relevant, and you can ask for yours to be deleted at any time.",
+        "The form also carries a hidden field and measures how long it took to complete. Both exist only to filter out automated spam, and neither identifies you.",
       ],
     },
     {
@@ -90,8 +92,10 @@ const sk: PrivacyDoc = {
     {
       heading: "Kontaktný formulár",
       body: [
-        "Formulár zatiaľ nie je pripojený k žiadnemu serveru, takže nič, čo doň napíšete, sa neodosiela ani neukladá. Priamo na stránke je to takto označené.",
-        "Keď bude spustený, odošle len to, čo vyplníte — meno, kontakt, ktorý uvediete, zvolenú službu a text správy — priamo mne, výlučne na účel odpovede na váš dopyt. Tento dokument bude v rovnakom čase aktualizovaný.",
+        "Pri odoslaní formulára sa odošle presne to, čo ste vyplnili: meno, e-mail a telefón, ktoré ste sa rozhodli uviesť, zvolená služba, rozpočet a termín, ak ste ich nastavili, a vaša správa. Nič ďalšie sa nezbiera a z vášho zariadenia sa neberie nič nad rámec toho, čo ste napísali.",
+        "Tieto údaje slúžia na jediný účel — odpovedať na váš dopyt a prípadne realizovať prácu, ktorá z neho vyplynie. Posielajú sa mi e-mailom a zaznamenávajú sa do súkromnej tabuľky, aby sa dopyt nestratil, ak by e-mail nedorazil. Ak necháte e-mailovú adresu, príde vám naň automatické potvrdenie.",
+        "Pomáhajú s tým dvaja poskytovatelia: Resend doručuje e-mail a Google Sheets uchováva záznam. Ani jeden nepoužíva vaše údaje na vlastné účely. Dopyty uchovávam len dovtedy, kým sú relevantné, a kedykoľvek môžete požiadať o ich vymazanie.",
+        "Formulár tiež obsahuje skryté pole a meria, ako dlho trvalo jeho vyplnenie. Oboje slúži výlučne na filtrovanie automatického spamu a ani jedno vás neidentifikuje.",
       ],
     },
     {

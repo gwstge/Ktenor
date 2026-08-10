@@ -41,6 +41,7 @@
   /* Muted enough not to shout on a premium surface, still 9:1 on the base. */
   --c-danger: #e0a0a0;
   --c-danger-border: #d98a8a;
+  --c-danger-bg: rgb(224 160 160 / 0.07);
   --c-line: rgb(238 239 244 / 0.09);
   --c-line-strong: rgb(238 239 244 / 0.16);
 
@@ -132,6 +133,7 @@
   --c-silver: #6b7280;
   --c-danger: #9b2c2c;
   --c-danger-border: #b04545;
+  --c-danger-bg: rgb(155 44 44 / 0.05);
   --c-line: rgb(20 22 28 / 0.1);
   --c-line-strong: rgb(20 22 28 / 0.18);
 

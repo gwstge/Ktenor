@@ -52,6 +52,14 @@ Last updated: 2026-08-08
       live in `media-src/` and never ship
 - [x] Font payload 133 KB → 80 KB: 600 and 700 were preloaded but never drawn
 
+## Live
+
+https://ktenor.online — apex is primary, `www` 308-redirects to it, `/` sends
+visitors to their remembered locale. Verified in production: sitemap, robots,
+canonicals and hreflang all resolve against the real domain, the OG image
+renders (73 KB PNG), unknown paths return a real 404, and every media variant
+is served with the right content type at its encoded weight.
+
 ## Resume here (next session)
 
 1. **Connect the repo in Vercel** — owner action; the code is pushed and the

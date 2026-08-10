@@ -58,15 +58,27 @@ export async function POST(request: Request) {
 
   // A bot filled the hidden field, or filled the whole form faster than anyone
   // reads it. Answer exactly like a success: telling a bot why it failed only
-  // helps it try again.
-  const trapped =
-    Boolean(clean(body.company, 100)) ||
-    (typeof body.startedAt === "number" && Date.now() - body.startedAt < MIN_FILL_MS);
-  if (trapped) return NextResponse.json({ ok: true });
+  // helps it try again. Logged (not surfaced to the visitor) because this can
+  // also catch a genuine visitor whose browser autofilled the honeypot or who
+  // double-submitted before the page settled — worth being able to tell apart
+  // from an actual delivery failure after the fact.
+  const honeypotFilled = Boolean(clean(body.company, 100));
+  const tooFast =
+    typeof body.startedAt === "number" && Date.now() - body.startedAt < MIN_FILL_MS;
+  if (honeypotFilled || tooFast) {
+    console.warn("[contact] trapped", {
+      honeypotFilled,
+      tooFast,
+      elapsedMs: typeof body.startedAt === "number" ? Date.now() - body.startedAt : null,
+      email: clean(body.email, LIMITS.email) || undefined,
+    });
+    return NextResponse.json({ ok: true });
+  }
 
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   if (rateLimited(ip)) {
+    console.warn("[contact] rate-limited", { ip });
     return NextResponse.json({ ok: false, reason: "rate-limited" }, { status: 429 });
   }
 
@@ -88,13 +100,22 @@ export async function POST(request: Request) {
   }
   if (enquiry.budget && !isBudgetKey(enquiry.budget)) enquiry.budget = "";
 
-  // Both run regardless of each other's outcome.
+  // Both run regardless of each other's outcome. Errors are logged with the
+  // enquirer's email so a failure can be traced back to a specific
+  // conversation rather than left as an unexplained gap.
   const [notified, recorded] = await Promise.all([
-    notifyOwner(enquiry).catch(() => false),
-    recordToSheet(enquiry).catch(() => false),
+    notifyOwner(enquiry).catch((err) => {
+      console.error("[contact] notifyOwner failed", { email: enquiry.email, err });
+      return false;
+    }),
+    recordToSheet(enquiry).catch((err) => {
+      console.error("[contact] recordToSheet failed", { email: enquiry.email, err });
+      return false;
+    }),
   ]);
 
   if (!notified && !recorded) {
+    console.error("[contact] both destinations failed", { email: enquiry.email });
     return NextResponse.json({ ok: false, reason: "delivery" }, { status: 502 });
   }
 
@@ -120,7 +141,10 @@ type CleanEnquiry = {
 async function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.CONTACT_FROM_EMAIL;
-  if (!key || !from) return false;
+  if (!key || !from) {
+    console.error("[contact] Resend not configured: missing RESEND_API_KEY or CONTACT_FROM_EMAIL");
+    return false;
+  }
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -130,6 +154,18 @@ async function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
     },
     body: JSON.stringify({ from, ...payload }),
   });
+
+  // Surface Resend's own explanation (invalid address, unverified domain,
+  // etc.) rather than just the fact that something failed.
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    console.error("[contact] Resend rejected the email", {
+      status: response.status,
+      to: payload.to,
+      detail,
+    });
+  }
+
   return response.ok;
 }
 

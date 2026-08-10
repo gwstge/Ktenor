@@ -5,6 +5,7 @@ import type { Dictionary } from "@/i18n";
 import type { Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
 import { services, type ServiceId } from "@/content/services";
+import { dialCodes } from "@/content/dial-codes";
 import { budgetKeys, validateEnquiry, type EnquiryErrorKey } from "@/lib/enquiry";
 import { Button } from "@/components/ui/Button";
 import { SELECT_SERVICE_EVENT } from "./OrderButton";
@@ -22,6 +23,7 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
   const serviceRef = useRef<HTMLSelectElement>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [dialCode, setDialCode] = useState<string>("+421");
   /** Used to spot a form completed faster than a human could read it. */
   const startedAt = useRef(Date.now());
 
@@ -41,10 +43,20 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
   function read(form: HTMLFormElement) {
     const data = new FormData(form);
     const get = (key: string) => String(data.get(key) ?? "").trim();
+
+    // "Other" leaves the code out — the visitor is expected to type their
+    // own country code into the number field, since there is no dial code to
+    // prepend for it. Otherwise the two visible controls become one E.164-ish
+    // string: digits are stripped from the local part so grouping the person
+    // typed ("911 608 486") doesn't survive into the stored number.
+    const code = get("phoneDialCode");
+    const localNumber = get("phoneNumber");
+    const phone = code ? `${code}${localNumber.replace(/[^\d]/g, "")}` : localNumber;
+
     return {
       name: get("name"),
       email: get("email"),
-      phone: get("phone"),
+      phone,
       service: get("service"),
       budget: get("budget"),
       timeline: get("timeline"),
@@ -69,9 +81,9 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
     setErrors(next);
 
     if (keys.length > 0) {
-      // Focus the first field that needs attention; "contact" is reported on
-      // the email input because that is where the pair starts.
-      const first = keys[0] === "contact" ? "email" : keys[0];
+      // "phone" is validated as one field but rendered as two inputs — send
+      // focus to the one the visitor actually types the number into.
+      const first = keys[0] === "phone" ? "phoneNumber" : keys[0];
       form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
     }
@@ -177,19 +189,48 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
               label={t.contact.fields.email}
               required
               requiredLabel={t.contact.fields.required}
-              error={errors.email ?? errors.contact}
+              error={errors.email}
               autoComplete="email"
               inputMode="email"
             />
-            <Field
-              id={`${uid}-phone`}
-              name="phone"
-              type="tel"
-              label={t.contact.fields.phone}
-              optionalLabel={t.contact.fields.recommended}
-              autoComplete="tel"
-              inputMode="tel"
-            />
+
+            <div>
+              <Label htmlFor={`${uid}-phone`} required requiredLabel={t.contact.fields.required}>
+                {t.contact.fields.phone}
+              </Label>
+              <div className="mt-2 flex gap-2">
+                <select
+                  id={`${uid}-dial-code`}
+                  name="phoneDialCode"
+                  aria-label={t.contact.fields.dialCodeLabel}
+                  value={dialCode}
+                  onChange={(e) => setDialCode(e.target.value)}
+                  className={`${inputClass(false)} w-[6.5rem] shrink-0 px-2`}
+                >
+                  {dialCodes.map((d) => (
+                    <option key={d.id} value={d.code}>
+                      {d.code ? `${d.code} ${t.contact.countries[d.id]}` : t.contact.countries[d.id]}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  id={`${uid}-phone`}
+                  name="phoneNumber"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder={
+                    dialCode
+                      ? t.contact.fields.phoneNumberPlaceholder
+                      : t.contact.fields.phoneNumberPlaceholderOther
+                  }
+                  aria-invalid={errors.phone ? true : undefined}
+                  aria-describedby={errors.phone ? `${uid}-phone-error` : undefined}
+                  className={`${inputClass(!!errors.phone)} flex-1`}
+                />
+              </div>
+              <FieldError id={`${uid}-phone-error`} message={errors.phone} />
+            </div>
           </div>
 
           <div>

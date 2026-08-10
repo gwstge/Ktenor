@@ -252,7 +252,8 @@ const en = {
   testimonials: {
     eyebrow: "Testimonials",
     title: "What clients say.",
-    empty: "The first reviews will appear here.",
+    comingSoon: "Coming soon.",
+    empty: "No reviews yet — this section will fill up as the first projects wrap up.",
   },
 
   faq: {
@@ -302,11 +303,14 @@ const en = {
     eyebrow: "Contact",
     title: "Start a project.",
     intro:
-      "Fill in what you know. A name and your email is enough to begin.",
+      "Fill in what you know. A name, an email and a phone number is enough to begin.",
     fields: {
       name: "Name",
       email: "Email",
       phone: "Phone",
+      dialCodeLabel: "Country code",
+      phoneNumberPlaceholder: "911 608 486",
+      phoneNumberPlaceholderOther: "Full number with country code",
       service: "What do you need?",
       servicePlaceholder: "Select a service",
       budget: "Budget",
@@ -317,6 +321,18 @@ const en = {
       optional: "optional",
       required: "required",
       recommended: "recommended",
+    },
+    countries: {
+      SK: "Slovakia",
+      CZ: "Czechia",
+      AT: "Austria",
+      HU: "Hungary",
+      PL: "Poland",
+      DE: "Germany",
+      GB: "United Kingdom",
+      IE: "Ireland",
+      US: "United States",
+      OTHER: "Other",
     },
     budgets: {
       under500: "Under €500",
@@ -342,8 +358,8 @@ const en = {
     rateLimit: "Too many attempts in a short time. Wait a few minutes, or contact me directly.",
     errors: {
       name: "Please enter your name.",
-      contact: "Please enter your email address.",
       email: "That email address does not look right.",
+      phone: "That phone number does not look right.",
       service: "Please choose what you need.",
       consent: "Please agree to the processing of your data.",
     },

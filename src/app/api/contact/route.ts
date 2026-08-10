@@ -195,6 +195,25 @@ function rows(pairs: [string, string][]) {
  * reads "Landing Page" and "€500 – 1 500" rather than the raw ids the form
  * submits ("landing", "500to1500").
  */
+/**
+ * The owner's opening line, pre-filled into the wa.me link below — so
+ * clicking the button in the notification email is the entire step between
+ * "a lead arrived" and "I'm talking to them."
+ */
+const FIRST_MESSAGE = {
+  sk: (name: string, service: string) =>
+    `Ahoj ${name}, tu Ktenor. Ďakujem za dopyt ohľadom ${service} — poďme prebrať detaily.`,
+  en: (name: string, service: string) =>
+    `Hi ${name}, this is Ktenor. Thanks for your enquiry about ${service} — let's go over the details.`,
+} as const;
+
+/** wa.me takes digits only, no leading +. */
+function ownerWhatsAppLink(phone: string, text: string): string | null {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 6) return null;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+}
+
 async function notifyOwner(enquiry: CleanEnquiry) {
   const to = process.env.CONTACT_TO_EMAIL || site.contact.email;
   const replyTo = enquiry.email || undefined;
@@ -205,6 +224,9 @@ async function notifyOwner(enquiry: CleanEnquiry) {
   const budgetLabel = enquiry.budget
     ? (t.contact.budgets as Record<string, string>)[enquiry.budget] ?? enquiry.budget
     : "—";
+  const waLink = enquiry.phone
+    ? ownerWhatsAppLink(enquiry.phone, FIRST_MESSAGE[enquiry.locale](enquiry.name, serviceLabel))
+    : null;
 
   // The two highest bands are unambiguously above the €1,000 mark the owner
   // set as the priority threshold; "under €500" and "€500–1,500" straddle it
@@ -251,6 +273,11 @@ async function notifyOwner(enquiry: CleanEnquiry) {
            </div>`
         : ""
     }
+    ${
+      waLink
+        ? `<a href="${waLink}" style="display:inline-block;margin-top:24px;background:#3f628f;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 20px;border-radius:8px">Message on WhatsApp</a>`
+        : ""
+    }
   </div>
 </div>`;
 
@@ -267,14 +294,14 @@ const ACK = {
     subject: "Ďakujem, že ste oslovili Ktenor",
     heading: "Ďakujem, že ste oslovili Ktenor.",
     body: "Vaša požiadavka bola prijatá. Pozriem sa na ňu a ozvem sa vám do jedného pracovného dňa.",
-    direct: "Ak to chcete prebrať skôr, ozvite sa mi priamo:",
+    direct: "Všetky detaily projektu môžeme prebrať priamo tu:",
     signoff: "Ktenor",
   },
   en: {
     subject: "Thanks for reaching out to Ktenor",
     heading: "Thanks for reaching out to Ktenor.",
     body: "Your request has been received. I'll review it and get back to you within 1 business day.",
-    direct: "If you'd rather talk sooner, reach me directly:",
+    direct: "We can go over all the project details directly here:",
     signoff: "Ktenor",
   },
 } as const;

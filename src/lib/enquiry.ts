@@ -3,7 +3,7 @@ import { serviceIds, type ServiceId } from "@/content/services";
 export const budgetKeys = ["under500", "500to1500", "1500to3000", "over3000"] as const;
 export type BudgetKey = (typeof budgetKeys)[number];
 
-export type EnquiryErrorKey = "name" | "contact" | "email" | "service" | "consent";
+export type EnquiryErrorKey = "name" | "email" | "phone" | "service" | "consent";
 
 export type Enquiry = {
   name: string;
@@ -23,6 +23,13 @@ export type Enquiry = {
 
 /** Deliberately permissive — the goal is to catch typos, not to police addresses. */
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/**
+ * Just as permissive: international numbers vary too much in length and
+ * grouping to validate strictly. This exists to catch someone typing a name
+ * into the field, not to police formatting.
+ */
+const PHONE = /^\+?[0-9()\-\s]{6,20}$/;
 
 export const LIMITS = {
   name: 120,
@@ -48,10 +55,12 @@ export function validateEnquiry(input: Partial<Enquiry>): EnquiryErrorKey[] {
   const phone = (input.phone ?? "").trim();
 
   if (!name) errors.push("name");
-  // Email is the one channel guaranteed to reach the visitor with the
-  // confirmation and, later, a reply — phone is a nice-to-have on top of it.
-  if (!email) errors.push("contact");
+  // Both required: email carries the confirmation, phone is how the owner
+  // reaches out directly — WhatsApp, a call, finding the person's socials.
+  if (!email) errors.push("email");
   else if (!EMAIL.test(email)) errors.push("email");
+  if (!phone) errors.push("phone");
+  else if (!PHONE.test(phone)) errors.push("phone");
   if (!input.service || !isServiceId(input.service)) errors.push("service");
   if (!input.consent) errors.push("consent");
 

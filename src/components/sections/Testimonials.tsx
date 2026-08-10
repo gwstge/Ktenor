@@ -10,40 +10,66 @@ export type Testimonial = {
 };
 
 /**
- * Built and ready, but switched off until there is a real review to show.
- * An empty "coming soon" testimonials block on a studio site announces that
- * there have been no clients yet — worse than not having the section at all.
- * Flip `site.features.testimonials` when the first one arrives.
+ * No reviews yet, and the owner would rather say so plainly than hide the
+ * section — the same call made for Work: one deliberate placeholder reads as
+ * "this is coming," a missing section reads as nothing at all.
+ *
+ * `site.features.testimonials` still gates the real grid below; flip it once
+ * `testimonials` holds actual quotes and this placeholder steps aside.
  */
 export const testimonials: Testimonial[] = [];
 
 export function Testimonials({ t }: { t: Dictionary }) {
-  if (!site.features.testimonials || testimonials.length === 0) return null;
+  if (site.features.testimonials && testimonials.length > 0) {
+    return (
+      <Section eyebrow={t.testimonials.eyebrow} title={t.testimonials.title}>
+        <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {testimonials.map((item) => (
+            <li key={item.id}>
+              <figure className="surface flex h-full flex-col rounded-[var(--radius-lg)] p-7">
+                <span aria-hidden className="flex gap-1">
+                  <span className="h-4 w-[3px] rounded-full bg-accent" />
+                  <span className="h-4 w-[3px] rounded-full bg-accent-mid" />
+                  <span className="h-4 w-[3px] rounded-full bg-accent-deep" />
+                </span>
+                <blockquote className="mt-6 flex-1 text-[length:var(--text-lead)]">
+                  {item.quote}
+                </blockquote>
+                <figcaption className="mt-6 border-t border-line pt-5 text-sm">
+                  <span className="text-text">{item.author}</span>
+                  {item.role ? (
+                    <span className="block text-caption text-text-muted">{item.role}</span>
+                  ) : null}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    );
+  }
 
   return (
     <Section eyebrow={t.testimonials.eyebrow} title={t.testimonials.title}>
-      <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {testimonials.map((item) => (
-          <li key={item.id}>
-            <figure className="surface flex h-full flex-col rounded-[var(--radius-lg)] p-7">
-              <span aria-hidden className="flex gap-1">
-                <span className="h-4 w-[3px] rounded-full bg-accent" />
-                <span className="h-4 w-[3px] rounded-full bg-accent-mid" />
-                <span className="h-4 w-[3px] rounded-full bg-accent-deep" />
-              </span>
-              <blockquote className="mt-6 flex-1 text-[length:var(--text-lead)]">
-                {item.quote}
-              </blockquote>
-              <figcaption className="mt-6 border-t border-line pt-5 text-sm">
-                <span className="text-text">{item.author}</span>
-                {item.role ? (
-                  <span className="block text-caption text-text-muted">{item.role}</span>
-                ) : null}
-              </figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
+      <article className="surface relative overflow-hidden rounded-[var(--radius-lg)] px-7 py-14 text-center sm:px-14 sm:py-20">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              "radial-gradient(70% 100% at 50% 0%, var(--c-accent-deep), transparent 62%)",
+          }}
+        />
+        <span aria-hidden className="relative mx-auto flex w-fit items-end gap-1.5">
+          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+        </span>
+        <p className="relative mt-8 text-[length:var(--text-h2)]">{t.testimonials.comingSoon}</p>
+        <p className="relative mx-auto mt-4 max-w-[46ch] text-text-secondary">
+          {t.testimonials.empty}
+        </p>
+      </article>
     </Section>
   );
 }

@@ -254,7 +254,8 @@ const sk: Dictionary = {
   testimonials: {
     eyebrow: "Referencie",
     title: "Čo hovoria klienti.",
-    empty: "Prvé recenzie sa objavia tu.",
+    comingSoon: "Čoskoro.",
+    empty: "Zatiaľ žiadne recenzie — sekcia sa naplní, keď sa dokončia prvé projekty.",
   },
 
   faq: {
@@ -304,11 +305,14 @@ const sk: Dictionary = {
     eyebrow: "Kontakt",
     title: "Začnime projekt.",
     intro:
-      "Vyplňte, čo viete. Na začiatok stačí meno a e-mail.",
+      "Vyplňte, čo viete. Na začiatok stačí meno, e-mail a telefónne číslo.",
     fields: {
       name: "Meno",
       email: "E-mail",
       phone: "Telefón",
+      dialCodeLabel: "Predvoľba krajiny",
+      phoneNumberPlaceholder: "911 608 486",
+      phoneNumberPlaceholderOther: "Celé číslo s predvoľbou krajiny",
       service: "Čo potrebujete?",
       servicePlaceholder: "Vyberte službu",
       budget: "Rozpočet",
@@ -319,6 +323,18 @@ const sk: Dictionary = {
       optional: "nepovinné",
       required: "povinné",
       recommended: "odporúčané",
+    },
+    countries: {
+      SK: "Slovensko",
+      CZ: "Česko",
+      AT: "Rakúsko",
+      HU: "Maďarsko",
+      PL: "Poľsko",
+      DE: "Nemecko",
+      GB: "Veľká Británia",
+      IE: "Írsko",
+      US: "USA",
+      OTHER: "Iná krajina",
     },
     budgets: {
       under500: "Do 500 €",
@@ -344,8 +360,8 @@ const sk: Dictionary = {
     rateLimit: "Príliš veľa pokusov za krátky čas. Počkajte pár minút alebo ma kontaktujte priamo.",
     errors: {
       name: "Zadajte prosím svoje meno.",
-      contact: "Zadajte prosím svoju e-mailovú adresu.",
       email: "Táto e-mailová adresa nevyzerá správne.",
+      phone: "Toto telefónne číslo nevyzerá správne.",
       service: "Vyberte prosím, čo potrebujete.",
       consent: "Potvrďte prosím súhlas so spracovaním údajov.",
     },

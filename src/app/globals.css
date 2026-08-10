@@ -83,14 +83,23 @@
  * warm amber that appears in the hero render — the same palette, not a new one.
  */
 :root {
-  --field-dark: radial-gradient(58% 46% at 12% -4%, rgb(110 143 196 / 0.13), transparent 70%),
+  /* Ambient wash carried by individual sections. The fixed field only ever
+     covers one viewport, so on a twelve-screen page every screen after the
+     first looked identical — that, not the palette, is what read as flat.
+     These scroll with the content, so they are painted once and never again. */
+  --wash-cool: rgb(110 143 196 / 0.07);
+  --wash-warm: rgb(150 112 74 / 0.055);
+
+  --field-dark: radial-gradient(120% 85% at 50% 45%, transparent 52%, rgb(0 0 0 / 0.38)),
+    radial-gradient(58% 46% at 12% -4%, rgb(110 143 196 / 0.15), transparent 70%),
     radial-gradient(48% 42% at 88% 18%, rgb(42 58 85 / 0.42), transparent 74%),
     radial-gradient(72% 55% at 52% 104%, rgb(150 112 74 / 0.06), transparent 70%),
     linear-gradient(178deg, #08090d 0%, #0a0c11 46%, #08090d 100%);
 
   /* Light: the same two notes at the same positions — cool steel, warm stone —
      lifted into off-white. Cream, not yellow; stone, not vintage. */
-  --field-light: radial-gradient(56% 44% at 10% -4%, rgb(53 84 127 / 0.09), transparent 70%),
+  --field-light: radial-gradient(120% 85% at 50% 45%, transparent 58%, rgb(22 23 27 / 0.055)),
+    radial-gradient(56% 44% at 10% -4%, rgb(53 84 127 / 0.1), transparent 70%),
     radial-gradient(46% 40% at 90% 16%, rgb(190 172 148 / 0.2), transparent 74%),
     radial-gradient(70% 54% at 50% 104%, rgb(120 130 150 / 0.09), transparent 70%),
     linear-gradient(178deg, #f7f6f4 0%, #f1f0ed 48%, #f6f5f3 100%);
@@ -98,6 +107,9 @@
 
 [data-theme="light"] {
   color-scheme: light;
+
+  --wash-cool: rgb(53 84 127 / 0.06);
+  --wash-warm: rgb(186 166 138 / 0.15);
 
   /* Warm off-white, never pure #fff. Cream rather than grey, but pulled back
      from anything yellow or vintage. */
@@ -107,7 +119,9 @@
 
   --c-text: #16171b; /* 16.2:1 on --c-bg */
   --c-text-secondary: #4b4f58; /*  7.3:1 */
-  --c-text-muted: #6a6e77; /*  4.7:1 */
+  /* Darkened to buy headroom: the warm section wash lifts the background
+     under this text, and at the old value it slipped below AA there. */
+  --c-text-muted: #5f636c; /*  5.6:1 on the base, 5.0:1 over the warm wash */
 
   --c-accent: #35547f; /*  7.1:1 — blue needs to go dark on light */
   --c-accent-strong: #24405f;
@@ -455,6 +469,65 @@
   .no-js [data-reveal-group] > * {
     opacity: 1;
     transform: none;
+  }
+
+  /**
+   * Per-section ambient wash. Alternating side and temperature, so the page
+   * cools and warms as it is read rather than holding one tone for twelve
+   * screens. Scrolls with its section, so it costs a single paint.
+   */
+  .section-wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: background var(--dur-slow) var(--ease-standard);
+  }
+
+  .section-wash[data-tone="cool"] {
+    background: radial-gradient(46% 58% at 8% 34%, var(--wash-cool), transparent 68%);
+  }
+
+  .section-wash[data-tone="warm"] {
+    background: radial-gradient(46% 58% at 92% 42%, var(--wash-warm), transparent 68%);
+  }
+
+  /**
+   * The logo's steel ramp, standing on the left edge of a card. Grows on
+   * hover via scaleY — one transform, no layout, one card at a time.
+   */
+  .edge-accent::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 24%;
+    bottom: 24%;
+    width: 2px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--c-accent), var(--c-accent-deep));
+    transform: scaleY(0);
+    transition: transform var(--dur-slower) var(--ease-out-expo);
+  }
+
+  .edge-accent:hover::before,
+  .edge-accent:focus-within::before {
+    transform: scaleY(1);
+  }
+
+  /**
+   * A hairline that fades out at both ends instead of stopping dead. Costs the
+   * same as a border and stops long rules from looking like table borders.
+   */
+  .rule-fade {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--c-line-strong) 12%,
+      var(--c-line-strong) 88%,
+      transparent
+    );
   }
 
   /**

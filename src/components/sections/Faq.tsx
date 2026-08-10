@@ -8,7 +8,7 @@ import { Section } from "@/components/ui/Section";
  */
 export function Faq({ t }: { t: Dictionary }) {
   return (
-    <Section eyebrow={t.faq.eyebrow} title={t.faq.title}>
+    <Section eyebrow={t.faq.eyebrow} title={t.faq.title} tone="warm">
       <div data-reveal-group className="max-w-[76ch] divide-y divide-line border-y border-line">
         {faqIds.map((id) => {
           const item = t.faq.items[id];

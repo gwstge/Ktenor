@@ -54,7 +54,14 @@ export function Cursor() {
         dotRef.current.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`;
       }
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%)`;
+        // The independent `translate` property, not `transform`. The ring is
+        // scaled on hover via the independent `scale` property, and the
+        // browser applies translate → rotate → scale → transform in that fixed
+        // order. Putting the position in `transform` left it *inside* the
+        // scale, so a 1.45 hover multiplied the coordinates and threw the ring
+        // sideways — further the further right the pointer was. Using
+        // `translate` puts the two in the correct order.
+        ringRef.current.style.translate = `calc(${ring.x}px - 50%) calc(${ring.y}px - 50%)`;
       }
       frame = requestAnimationFrame(tick);
     };

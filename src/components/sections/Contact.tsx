@@ -23,7 +23,6 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
   const serviceRef = useRef<HTMLSelectElement>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [dialCode, setDialCode] = useState<string>("+421");
   /** Used to spot a form completed faster than a human could read it. */
   const startedAt = useRef(Date.now());
 
@@ -194,43 +193,13 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
               inputMode="email"
             />
 
-            <div>
-              <Label htmlFor={`${uid}-phone`} required requiredLabel={t.contact.fields.required}>
-                {t.contact.fields.phone}
-              </Label>
-              <div className="mt-2 flex gap-2">
-                <select
-                  id={`${uid}-dial-code`}
-                  name="phoneDialCode"
-                  aria-label={t.contact.fields.dialCodeLabel}
-                  value={dialCode}
-                  onChange={(e) => setDialCode(e.target.value)}
-                  className={`${inputClass(false)} w-[6.5rem] shrink-0 px-2`}
-                >
-                  {dialCodes.map((d) => (
-                    <option key={d.id} value={d.code}>
-                      {d.code ? `${d.code} ${t.contact.countries[d.id]}` : t.contact.countries[d.id]}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  id={`${uid}-phone`}
-                  name="phoneNumber"
-                  type="tel"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  placeholder={
-                    dialCode
-                      ? t.contact.fields.phoneNumberPlaceholder
-                      : t.contact.fields.phoneNumberPlaceholderOther
-                  }
-                  aria-invalid={errors.phone ? true : undefined}
-                  aria-describedby={errors.phone ? `${uid}-phone-error` : undefined}
-                  className={`${inputClass(!!errors.phone)} flex-1`}
-                />
-              </div>
-              <FieldError id={`${uid}-phone-error`} message={errors.phone} />
-            </div>
+            <PhoneField
+              id={`${uid}-phone`}
+              label={t.contact.fields.phone}
+              requiredLabel={t.contact.fields.required}
+              error={errors.phone}
+              t={t}
+            />
           </div>
 
           <div>
@@ -364,6 +333,114 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
         </form>
       </div>
     </section>
+  );
+}
+
+/** "9116084869" -> "911 608 486". Depends only on digit count, not the
+ *  digits themselves, so the typed prefix and the static mask below stay
+ *  character-aligned as the visitor types. */
+function groupDigits(digits: string): string {
+  const groups: string[] = [];
+  for (let i = 0; i < digits.length; i += 3) groups.push(digits.slice(i, i + 3));
+  return groups.join(" ");
+}
+
+const PHONE_MASK = groupDigits("000000000"); // "000 000 000"
+
+/**
+ * One bordered box holding a compact dial-code select and the number input,
+ * merged with a hairline divider rather than two separate fields — that was
+ * the "awkward blocks" complaint. The number input sits on real, opaque text
+ * (fixing "not clearly visible") over a static "000 000 000" layer in the
+ * same position: typed digits paint over the mask as they're entered, so it
+ * reads as digits replacing zeros rather than a placeholder that vanishes
+ * outright. Both layers run through the same grouping function, so they stay
+ * aligned without measuring anything.
+ *
+ * "Other" has no fixed-length number to mask against, so it falls back to a
+ * plain input with a native placeholder instead of pretending to.
+ */
+function PhoneField({
+  id,
+  label,
+  requiredLabel,
+  error,
+  t,
+}: {
+  id: string;
+  label: string;
+  requiredLabel: string;
+  error?: string;
+  t: Dictionary;
+}) {
+  const [dialCode, setDialCode] = useState("+421");
+  const [digits, setDigits] = useState("");
+  const [otherValue, setOtherValue] = useState("");
+  const numberRef = useRef<HTMLInputElement>(null);
+  const errorId = `${id}-error`;
+  const isOther = dialCode === "";
+  const formatted = isOther ? otherValue : groupDigits(digits);
+
+  return (
+    <div>
+      <Label htmlFor={id} required requiredLabel={requiredLabel}>
+        {label}
+      </Label>
+      <div
+        className={`mt-2 flex items-stretch overflow-hidden rounded-[var(--radius-sm)] border bg-bg-raised transition-colors duration-[var(--dur-base)] focus-within:border-accent ${
+          error ? "border-[var(--c-danger-border)]" : "border-line-strong"
+        }`}
+      >
+        <select
+          name="phoneDialCode"
+          aria-label={t.contact.fields.dialCodeLabel}
+          value={dialCode}
+          onChange={(e) => setDialCode(e.target.value)}
+          className="w-auto shrink-0 cursor-pointer border-0 bg-transparent py-3.5 pl-3.5 pr-1 text-body text-text outline-none"
+        >
+          {dialCodes.map((d) => (
+            <option key={d.id} value={d.code}>
+              {d.code || t.contact.countries.OTHER}
+            </option>
+          ))}
+        </select>
+        <span aria-hidden className="my-2.5 w-px shrink-0 bg-line-strong" />
+        <div
+          className="relative min-w-0 flex-1 cursor-text"
+          onClick={() => numberRef.current?.focus()}
+        >
+          {!isOther ? (
+            <span
+              aria-hidden
+              className="tabular pointer-events-none absolute inset-0 select-none whitespace-pre py-3.5 pl-2 text-body text-text-muted/35"
+            >
+              {PHONE_MASK}
+            </span>
+          ) : null}
+          <input
+            ref={numberRef}
+            id={id}
+            name="phoneNumber"
+            type="tel"
+            inputMode={isOther ? "text" : "tel"}
+            autoComplete="tel"
+            value={formatted}
+            onChange={(e) => {
+              if (isOther) {
+                setOtherValue(e.target.value);
+              } else {
+                setDigits(e.target.value.replace(/\D/g, "").slice(0, 14));
+              }
+            }}
+            placeholder={isOther ? t.contact.fields.phoneNumberPlaceholderOther : undefined}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
+            className="tabular relative w-full min-w-0 border-0 bg-transparent py-3.5 pl-2 pr-3 text-body text-text outline-none placeholder:text-text-muted"
+          />
+        </div>
+      </div>
+      <FieldError id={errorId} message={error} />
+    </div>
   );
 }
 

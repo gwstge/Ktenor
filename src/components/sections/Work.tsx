@@ -1,58 +1,48 @@
 import type { Dictionary } from "@/i18n";
-import { site } from "@/lib/site";
-import { projectIds } from "@/content/services";
 import { Section } from "@/components/ui/Section";
 
 /**
- * The demos do not exist yet, so the cards are honest about it: no dead links
- * dressed up as live ones. Each is labelled a concept so nothing here can be
- * mistaken for client work.
+ * There is no client work yet and the section says so plainly. A single
+ * deliberate card reads as a decision; a grid of empty slots or invented
+ * placeholders would read as an unfinished site.
+ *
+ * The three-bar mark is the same motif used in the logo and the intro loader,
+ * so the placeholder still belongs to the brand rather than sitting outside it.
  */
 export function Work({ t }: { t: Dictionary }) {
   return (
-    <Section id="work" eyebrow={t.work.eyebrow} title={t.work.title} intro={t.work.intro}>
-      <ul data-reveal-group className="grid gap-5 sm:grid-cols-2">
-        {projectIds.map((id, index) => {
-          const project = t.work.projects[id];
-          return (
-            <li key={id}>
-              <article className="group surface surface-hover relative h-full overflow-hidden rounded-[var(--radius-lg)] p-7 sm:p-9">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
-                  style={{
-                    background:
-                      "radial-gradient(120% 90% at 12% 0%, var(--c-accent-deep), transparent 62%)",
-                  }}
-                />
+    <Section id="work" eyebrow={t.work.eyebrow} title={t.work.title}>
+      <article
+        data-reveal
+        className="surface surface-hover group relative overflow-hidden rounded-[var(--radius-lg)] px-7 py-14 sm:px-14 sm:py-20"
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(90% 120% at 8% 0%, var(--c-accent-deep), transparent 58%)",
+          }}
+        />
 
-                <div className="relative flex items-start justify-between gap-4">
-                  <span className="rounded-full border border-line-strong px-3 py-1 text-caption uppercase tracking-[0.16em] text-text-muted">
-                    {t.work.badge}
-                  </span>
-                  <span className="text-caption tabular text-text-muted">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
+        <div className="relative max-w-[52ch]">
+          {/* The brand's three bars, held mid-sequence: the third is still dim
+              because the work it stands for has not happened yet. */}
+          <span aria-hidden className="flex items-end gap-1.5">
+            <span className="h-7 w-[5px] rounded-full bg-accent" />
+            <span className="h-7 w-[5px] rounded-full bg-accent-mid" />
+            <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+          </span>
 
-                <h3 className="relative mt-14 text-[length:var(--text-h2)]">
-                  {project.name}
-                </h3>
-                <p className="relative mt-3 max-w-[38ch] text-text-secondary">
-                  {project.description}
-                </p>
+          <h3 className="mt-9 text-[length:var(--text-h2)]">
+            {t.work.placeholder.label}
+          </h3>
 
-                <p className="relative mt-8 flex items-center gap-2.5 text-caption text-text-muted">
-                  <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-                  {site.features.portfolioLinks ? project.name : t.work.comingSoon}
-                </p>
-              </article>
-            </li>
-          );
-        })}
-      </ul>
-
-      <p className="mt-8 text-caption text-text-muted">{t.work.note}</p>
+          <p className="mt-5 text-[length:var(--text-lead)] text-text-secondary">
+            {t.work.placeholder.description}
+          </p>
+        </div>
+      </article>
     </Section>
   );
 }

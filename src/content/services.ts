@@ -80,6 +80,11 @@ export const advantageIds = [
   "bespoke",
 ] as const;
 
+/**
+ * Kept, though nothing renders it right now: the Work section shows a single
+ * placeholder until real client projects exist. These are the four demo builds
+ * that were planned, so bringing them back is a matter of wiring, not research.
+ */
 export const projectIds = ["cafe", "store", "dental", "realestate"] as const;
 
 export type ProjectId = (typeof projectIds)[number];

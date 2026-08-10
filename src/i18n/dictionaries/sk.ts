@@ -50,30 +50,12 @@ const sk: Dictionary = {
   },
 
   work: {
-    eyebrow: "Vybrané práce",
-    title: "Koncepty, ktoré môžete posúdiť.",
-    intro:
-      "Štyri projekty, štyri odvetvia, štyri vizuálne jazyky. Ani jeden nie je klientsky web — existujú preto, aby ste si remeslo mohli posúdiť skôr, než sa k čomukoľvek zaviažete.",
-    badge: "Demo projekt",
-    note: "Koncept — dizajn a vývoj. Nie je to klientsky web.",
-    comingSoon: "Čoskoro",
-    projects: {
-      cafe: {
-        name: "Kaviareň",
-        description: "Teplé, hmatateľné, bez zhonu. Menu a atmosféra na prvom mieste.",
-      },
-      store: {
-        name: "E-shop",
-        description: "Moderný minimalizmus. Stránku nesie produktová fotografia.",
-      },
-      dental: {
-        name: "Zubná klinika",
-        description: "Čisté a profesionálne. Dôvera cez pokoj a zrozumiteľnosť.",
-      },
-      realestate: {
-        name: "Reality",
-        description: "Zdržanlivé a drahé. Nehnuteľnosť prezentovaná ako architektúra.",
-      },
+    eyebrow: "Práce",
+    title: "Klientske projekty.",
+    placeholder: {
+      label: "Pokračovanie nasleduje",
+      description:
+        "Zatiaľ žiadne klientske projekty — táto sekcia sa doplní o skutočné realizácie hneď po dokončení prvých projektov.",
     },
   },
 

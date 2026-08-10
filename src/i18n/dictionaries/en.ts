@@ -48,30 +48,12 @@ const en = {
   },
 
   work: {
-    eyebrow: "Selected work",
-    title: "Concepts built to be judged.",
-    intro:
-      "Four projects, four industries, four visual languages. None of them are client websites — they exist so you can judge the craft before committing to anything.",
-    badge: "Demo project",
-    note: "Concept — design & development. Not a client website.",
-    comingSoon: "Coming soon",
-    projects: {
-      cafe: {
-        name: "Cafe",
-        description: "Warm, tactile, unhurried. Menu and atmosphere first.",
-      },
-      store: {
-        name: "Online store",
-        description: "Modern minimalism. Product photography carries the page.",
-      },
-      dental: {
-        name: "Dental clinic",
-        description: "Clean and clinical. Trust built through calm and clarity.",
-      },
-      realestate: {
-        name: "Real estate",
-        description: "Restrained and expensive. Property presented like architecture.",
-      },
+    eyebrow: "Work",
+    title: "Client projects.",
+    placeholder: {
+      label: "To be continued",
+      description:
+        "No client projects yet — this section will be updated with real client work as soon as the first projects are completed.",
     },
   },
 

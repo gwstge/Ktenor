@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Master media — re-encoded into public/media by 
 pm run media`nmedia-src/
+
+# local dev server log
+dev.log

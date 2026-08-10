@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+ï»¿# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -40,8 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Master media — re-encoded into public/media by 
-pm run media`nmedia-src/
+# Master media. Re-encoded into public/media by "npm run media";
+# only the encoded output belongs in the repository.
+media-src/
 
 # local dev server log
 dev.log

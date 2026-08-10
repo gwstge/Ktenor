@@ -79,23 +79,13 @@ placeholder domain. `ffmpeg-static` pulls an ~80 MB binary on install; if a
 build ever fails on it, move it out of the dependency list — the encoded media
 is committed and nothing at build time needs ffmpeg.
 
-### Note on verifying in the browser
+## Open questions
 
-The in-app preview pane runs with rendering suspended, so
-`requestAnimationFrame`, `IntersectionObserver` and CSS transitions never
-advance there. Anything animated must be verified by reading state (attributes,
-computed styles after manually pumping `window.lenis.raf(t)`) rather than by
-waiting for it to happen. `window.lenis` is exposed in development for this.
-
-## Open questions for the owner
-
-1. **The hero video still ships at 5 MB.** ffmpeg is not installed, so it
-   cannot be re-encoded. Either install ffmpeg, or approve `ffmpeg-static` as a
-   dev dependency. Until then the first screen is far heavier than the
-   performance target allows — this is the single biggest outstanding issue.
-2. **Domain** — `NEXT_PUBLIC_SITE_URL` falls back to a placeholder, which is
-   what canonicals, sitemap, hreflang and OG all resolve against.
-3. **Slovak proof-read** by a native speaker before launch.
+1. **The enquiry form has nowhere to deliver yet.** The endpoint is built and
+   tested, but `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `SHEET_WEBHOOK_URL` and
+   `SHEET_WEBHOOK_SECRET` are unset, so a submission currently fails honestly
+   rather than pretending. See `CONTACT-SETUP.md`.
+2. **Slovak proof-read** — declined for now, see below.
 
 ## Conventions
 
@@ -103,5 +93,5 @@ waiting for it to happen. `window.lenis` is exposed in development for this.
 - Each finished section gets its own commit.
 - Prices, timelines and section ids live in `src/content/services.ts` — stated
   once, never duplicated into copy.
-- Commit messages go through a file (`git commit -F`): PowerShell mangles
-  arguments containing double quotes.
+- Secrets are never committed. `.env.local` is ignored; production values live
+  in the Vercel dashboard.

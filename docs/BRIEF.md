@@ -35,7 +35,7 @@ Slovak (default) and English **only**. No Russian anywhere on the site.
 - `/sk` and `/en`; the bare domain redirects to `/sk`
 - Text switcher `SK / EN` in the header next to the theme toggle — no flags
 - Choice persisted, so a returning visitor lands on their language
-- Copy is written by Claude in EN + SK; Slovak needs a native proof-read before launch
+- Copy is written in EN + SK; Slovak would benefit from a native proof-read
 
 ## 4. Brand
 

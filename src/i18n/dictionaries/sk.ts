@@ -304,12 +304,11 @@ const sk: Dictionary = {
     eyebrow: "Kontakt",
     title: "Začnime projekt.",
     intro:
-      "Vyplňte, čo viete. Na začiatok stačí meno a jeden kontakt.",
+      "Vyplňte, čo viete. Na začiatok stačí meno a e-mail.",
     fields: {
       name: "Meno",
       email: "E-mail",
       phone: "Telefón",
-      contactHint: "E-mail alebo telefón — stačí jedno z toho.",
       service: "Čo potrebujete?",
       servicePlaceholder: "Vyberte službu",
       budget: "Rozpočet",
@@ -319,6 +318,7 @@ const sk: Dictionary = {
       messagePlaceholder: "Na čo má slúžiť, čo má robiť, čokoľvek už viete.",
       optional: "nepovinné",
       required: "povinné",
+      recommended: "odporúčané",
     },
     budgets: {
       under500: "Do 500 €",
@@ -344,7 +344,7 @@ const sk: Dictionary = {
     rateLimit: "Príliš veľa pokusov za krátky čas. Počkajte pár minút alebo ma kontaktujte priamo.",
     errors: {
       name: "Zadajte prosím svoje meno.",
-      contact: "Nechajte prosím e-mail alebo telefón.",
+      contact: "Zadajte prosím svoju e-mailovú adresu.",
       email: "Táto e-mailová adresa nevyzerá správne.",
       service: "Vyberte prosím, čo potrebujete.",
       consent: "Potvrďte prosím súhlas so spracovaním údajov.",

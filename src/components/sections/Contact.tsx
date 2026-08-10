@@ -175,6 +175,8 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
               name="email"
               type="email"
               label={t.contact.fields.email}
+              required
+              requiredLabel={t.contact.fields.required}
               error={errors.email ?? errors.contact}
               autoComplete="email"
               inputMode="email"
@@ -184,11 +186,11 @@ export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
               name="phone"
               type="tel"
               label={t.contact.fields.phone}
+              optionalLabel={t.contact.fields.recommended}
               autoComplete="tel"
               inputMode="tel"
             />
           </div>
-          <p className="-mt-3 text-caption text-text-muted">{t.contact.fields.contactHint}</p>
 
           <div>
             <Label htmlFor={`${uid}-service`} required requiredLabel={t.contact.fields.required}>

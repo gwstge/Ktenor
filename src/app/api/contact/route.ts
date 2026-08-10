@@ -206,17 +206,36 @@ async function notifyOwner(enquiry: CleanEnquiry) {
     ? (t.contact.budgets as Record<string, string>)[enquiry.budget] ?? enquiry.budget
     : "—";
 
+  // The two highest bands are unambiguously above the €1,000 mark the owner
+  // set as the priority threshold; "under €500" and "€500–1,500" straddle it
+  // and are left as ordinary.
+  const isPriority = enquiry.budget === "1500to3000" || enquiry.budget === "over3000";
+
+  const receivedAt = new Date().toLocaleString(enquiry.locale === "sk" ? "sk-SK" : "en-GB", {
+    timeZone: "Europe/Bratislava",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
   const html = `
 <div style="background:#0b0c11;padding:32px;font-family:-apple-system,Segoe UI,sans-serif">
   <div style="max-width:560px;margin:0 auto;background:#101319;border:1px solid rgba(238,239,244,.1);border-radius:14px;padding:28px">
-    <div style="display:flex;gap:5px;margin-bottom:20px">
-      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#6e8fc4"></span>
-      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#46618f"></span>
-      <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#2a3a55"></span>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="display:flex;gap:5px">
+        <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#6e8fc4"></span>
+        <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#46618f"></span>
+        <span style="display:inline-block;width:5px;height:20px;border-radius:99px;background:#2a3a55"></span>
+      </div>
+      ${
+        isPriority
+          ? `<span style="color:#6e8fc4;font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(110,143,196,.4);border-radius:99px;padding:4px 10px">Priority</span>`
+          : ""
+      }
     </div>
     <p style="margin:0 0 4px;color:#6e8fc4;font-size:12px;letter-spacing:.18em;text-transform:uppercase">New enquiry</p>
     <h1 style="margin:0 0 24px;color:#eeeff4;font-size:22px;font-weight:600">${escapeHtml(enquiry.name)}</h1>
     <table style="border-collapse:collapse;width:100%">${rows([
+      ["Received", receivedAt],
       ["Email", enquiry.email || "—"],
       ["Phone", enquiry.phone || "—"],
       ["Service", serviceLabel],
@@ -237,7 +256,7 @@ async function notifyOwner(enquiry: CleanEnquiry) {
 
   return sendEmail({
     to,
-    subject: `Enquiry — ${enquiry.name} · ${serviceLabel}`,
+    subject: `${isPriority ? "[Priority] " : ""}Enquiry — ${enquiry.name} · ${serviceLabel}`,
     html,
     ...(replyTo ? { reply_to: replyTo } : {}),
   });

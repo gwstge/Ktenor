@@ -48,8 +48,10 @@ export function validateEnquiry(input: Partial<Enquiry>): EnquiryErrorKey[] {
   const phone = (input.phone ?? "").trim();
 
   if (!name) errors.push("name");
-  if (!email && !phone) errors.push("contact");
-  else if (email && !EMAIL.test(email)) errors.push("email");
+  // Email is the one channel guaranteed to reach the visitor with the
+  // confirmation and, later, a reply — phone is a nice-to-have on top of it.
+  if (!email) errors.push("contact");
+  else if (!EMAIL.test(email)) errors.push("email");
   if (!input.service || !isServiceId(input.service)) errors.push("service");
   if (!input.consent) errors.push("consent");
 

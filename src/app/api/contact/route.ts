@@ -121,11 +121,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, reason: "delivery" }, { status: 502 });
   }
 
-  // Secondary: a failed acknowledgement must never turn a received enquiry
-  // into an error the visitor sees.
-  void acknowledge(enquiry).catch(() => {});
+  // Awaited, not fire-and-forget: a serverless function can be frozen the
+  // instant a response is sent, and an un-awaited promise started before that
+  // is not guaranteed to finish. That was silently dropping this email on an
+  // unpredictable fraction of submissions. Still never turns a received
+  // enquiry into an error the visitor sees — failure here is caught and
+  // logged, not surfaced.
+  const acknowledged = await acknowledge(enquiry).catch((err) => {
+    console.error("[contact] acknowledge failed", { email: enquiry.email, err });
+    return false;
+  });
 
-  return NextResponse.json({ ok: true, notified, recorded });
+  return NextResponse.json({ ok: true, notified, recorded, acknowledged });
 }
 
 type CleanEnquiry = {
@@ -241,15 +248,31 @@ const ACK = {
     subject: "Ďakujem, že ste oslovili Ktenor",
     heading: "Ďakujem, že ste oslovili Ktenor.",
     body: "Vaša požiadavka bola prijatá. Pozriem sa na ňu a ozvem sa vám do jedného pracovného dňa.",
+    direct: "Ak to chcete prebrať skôr, ozvite sa mi priamo:",
     signoff: "Ktenor",
   },
   en: {
     subject: "Thanks for reaching out to Ktenor",
     heading: "Thanks for reaching out to Ktenor.",
     body: "Your request has been received. I'll review it and get back to you within 1 business day.",
+    direct: "If you'd rather talk sooner, reach me directly:",
     signoff: "Ktenor",
   },
 } as const;
+
+/**
+ * A row of direct contact links — WhatsApp, Instagram, phone — so a visitor
+ * who wants to move faster than "1 business day" always has a way to.
+ */
+function contactLinks() {
+  const link = (href: string, label: string) =>
+    `<a href="${href}" style="color:#6e8fc4;text-decoration:none;font-size:14px">${escapeHtml(label)}</a>`;
+  return [
+    link(site.contact.whatsappUrl, "WhatsApp"),
+    link(site.contact.instagramUrl, "Instagram"),
+    link(`tel:${site.contact.phone}`, site.contact.phoneDisplay),
+  ].join('<span style="color:#46618f;padding:0 8px">&middot;</span>');
+}
 
 async function acknowledge(enquiry: CleanEnquiry) {
   const email = enquiry.email;
@@ -266,8 +289,12 @@ async function acknowledge(enquiry: CleanEnquiry) {
     </div>
     <h1 style="margin:0 0 16px;color:#eeeff4;font-size:22px;font-weight:600">${copy.heading}</h1>
     <p style="margin:0 0 28px;color:#a2a8b6;font-size:15px;line-height:1.65">${copy.body}</p>
-    <p style="margin:0;color:#767e8f;font-size:13px">
-      ${copy.signoff} · <a href="${site.url}" style="color:#6e8fc4;text-decoration:none">${site.url.replace("https://", "")}</a>
+    <div style="padding-top:20px;border-top:1px solid rgba(238,239,244,.1)">
+      <p style="margin:0 0 12px;color:#767e8f;font-size:13px">${copy.direct}</p>
+      <p style="margin:0">${contactLinks()}</p>
+    </div>
+    <p style="margin:28px 0 0;color:#767e8f;font-size:13px">
+      ${copy.signoff} &middot; <a href="${site.url}" style="color:#6e8fc4;text-decoration:none">${site.url.replace("https://", "")}</a>
     </p>
   </div>
 </div>`;

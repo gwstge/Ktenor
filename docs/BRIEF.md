@@ -103,7 +103,7 @@ Plus custom **404** and **500** pages, built in the polish phase.
 
 ## 6. Hero 3D
 
-Supplied as a finished render from motionsites.ai — 1920×1080, 24 fps, 10 s,
+Supplied by the owner as a finished render — 1920×1080, 24 fps, 10 s,
 H.264, 5.03 MB, poster PNG 1376×768. Commercial use confirmed by the owner.
 
 - **No alpha channel**, black baked in → **the Hero stays dark in both themes**.

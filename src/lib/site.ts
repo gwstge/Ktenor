@@ -1,11 +1,37 @@
+const FALLBACK_ORIGIN = "https://ktenor.online";
+
+/**
+ * Reduce whatever is configured to a bare origin.
+ *
+ * Everything canonical hangs off this value — canonical links, hreflang, the
+ * sitemap, the OG image — so a stray path or trailing slash does not stay a
+ * small mistake: it is repeated into every URL the site publishes. A value
+ * pasted straight from the address bar carries the locale prefix with it and
+ * silently produces /sk/sk everywhere, which is exactly what happened.
+ */
+function toOrigin(value: string | undefined): string {
+  if (!value) return FALLBACK_ORIGIN;
+  try {
+    return new URL(value.includes("://") ? value : `https://${value}`).origin;
+  } catch {
+    return FALLBACK_ORIGIN;
+  }
+}
+
 /**
  * Single source of truth for anything that is not copy.
- * Domain is intentionally an env var — swapping it later is a one-line change.
+ *
+ * The domain comes from the environment so it can change without touching
+ * code. Vercel's own production URL is the second choice, which keeps preview
+ * deployments honest when nothing is configured at all.
  */
 export const site = {
   name: "Ktenor",
   legalName: "KTENOR",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ktenor.sk",
+  url: toOrigin(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL,
+  ),
 
   contact: {
     email: "ktenorstudios@gmail.com",

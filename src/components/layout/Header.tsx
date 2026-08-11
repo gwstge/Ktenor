@@ -18,12 +18,13 @@ export function Header({ locale, t }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   const links = [
-    { href: "#work", label: t.nav.work },
-    { href: "#services", label: t.nav.services },
-    { href: "#process", label: t.nav.process },
-    { href: "#about", label: t.nav.about },
+    { href: `/${locale}#work`, label: t.nav.work },
+    { href: `/${locale}#services`, label: t.nav.services },
+    { href: `/${locale}#process`, label: t.nav.process },
+    { href: `/${locale}#about`, label: t.nav.about },
     { href: `/${locale}/reviews`, label: t.nav.reviews, page: true },
-    { href: "#contact", label: t.nav.contact },
+    { href: `/${locale}#faq`, label: t.nav.faq },
+    { href: `/${locale}#contact`, label: t.nav.contact },
   ];
 
   // Glass only once there is something behind it to refract.

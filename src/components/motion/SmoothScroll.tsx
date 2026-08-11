@@ -49,13 +49,21 @@ export function SmoothScroll() {
     };
     frame = requestAnimationFrame(raf);
 
-    // In-page anchors have to go through Lenis or they fight it.
+    // In-page anchors have to go through Lenis or they fight it. Nav links
+    // point at `/${locale}#section` so they still work from other routes
+    // (e.g. /reviews) via a normal browser navigation back to the homepage —
+    // only intercept when the link's path is the page we're already on.
     const onClick = (event: MouseEvent) => {
-      const anchor = (event.target as HTMLElement | null)?.closest?.('a[href^="#"]');
+      const anchor = (event.target as HTMLElement | null)?.closest?.('a[href*="#"]');
       if (!anchor) return;
-      const id = anchor.getAttribute("href");
-      if (!id || id === "#") return;
-      const target = document.querySelector(id);
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      const hashIndex = href.indexOf("#");
+      const hash = href.slice(hashIndex);
+      if (hash === "#") return;
+      const path = href.slice(0, hashIndex);
+      if (path && path !== window.location.pathname) return;
+      const target = document.querySelector(hash);
       if (!target) return;
       event.preventDefault();
       lenis.scrollTo(target as HTMLElement, { offset: -72 });

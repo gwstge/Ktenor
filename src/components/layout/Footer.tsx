@@ -10,11 +10,12 @@ type Props = { locale: Locale; t: Dictionary };
 
 export function Footer({ locale, t }: Props) {
   const nav = [
-    { href: "#work", label: t.nav.work },
-    { href: "#services", label: t.nav.services },
-    { href: "#process", label: t.nav.process },
-    { href: "#about", label: t.nav.about },
-    { href: "#contact", label: t.nav.contact },
+    { href: `/${locale}#work`, label: t.nav.work },
+    { href: `/${locale}#services`, label: t.nav.services },
+    { href: `/${locale}#process`, label: t.nav.process },
+    { href: `/${locale}#about`, label: t.nav.about },
+    { href: `/${locale}#faq`, label: t.nav.faq },
+    { href: `/${locale}#contact`, label: t.nav.contact },
   ];
 
   return (

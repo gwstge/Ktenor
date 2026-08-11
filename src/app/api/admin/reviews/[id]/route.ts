@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/admin-auth";
 import { deleteReview, updateReview, type ReviewPatch } from "@/lib/db";
 import { clean, LIMITS } from "@/lib/review";
+import { revalidateReviewPages } from "@/lib/revalidate-reviews";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,6 +39,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
   const updated = await updateReview(id, patch);
   if (!updated) return NextResponse.json({ ok: false }, { status: 404 });
+  revalidateReviewPages();
   return NextResponse.json({ ok: true, review: updated });
 }
 
@@ -48,5 +50,6 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
   const { id } = await params;
   const removed = await deleteReview(id);
   if (!removed) return NextResponse.json({ ok: false }, { status: 404 });
+  revalidateReviewPages();
   return NextResponse.json({ ok: true });
 }

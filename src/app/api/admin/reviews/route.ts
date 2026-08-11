@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/admin-auth";
 import { insertOwnerReview, listAllReviews } from "@/lib/db";
 import { clean, validateReview, LIMITS, type ReviewInput } from "@/lib/review";
+import { revalidateReviewPages } from "@/lib/revalidate-reviews";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -48,5 +49,6 @@ export async function POST(request: Request) {
     locale: input.locale,
   });
 
+  revalidateReviewPages();
   return NextResponse.json({ ok: true, review: saved });
 }

@@ -16,6 +16,7 @@ const en = {
     process: "Process",
     about: "About",
     reviews: "Reviews",
+    faq: "FAQ",
     contact: "Contact",
     menu: "Menu",
     openMenu: "Open menu",

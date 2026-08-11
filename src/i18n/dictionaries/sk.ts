@@ -18,6 +18,7 @@ const sk: Dictionary = {
     process: "Postup",
     about: "O mne",
     reviews: "Recenzie",
+    faq: "Časté otázky",
     contact: "Kontakt",
     menu: "Menu",
     openMenu: "Otvoriť menu",

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { site } from "@/lib/site";
 import { getDictionary } from "@/i18n";
 import type { ServiceId } from "@/content/services";
+import { sendEmail as sendResendEmail, escapeHtml } from "@/lib/email";
 import {
   clean,
   isBudgetKey,
@@ -147,35 +148,8 @@ type CleanEnquiry = {
   locale: "sk" | "en";
 };
 
-async function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
-  if (!key || !from) {
-    console.error("[contact] Resend not configured: missing RESEND_API_KEY or CONTACT_FROM_EMAIL");
-    return false;
-  }
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ from, ...payload }),
-  });
-
-  // Surface Resend's own explanation (invalid address, unverified domain,
-  // etc.) rather than just the fact that something failed.
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    console.error("[contact] Resend rejected the email", {
-      status: response.status,
-      to: payload.to,
-      detail,
-    });
-  }
-
-  return response.ok;
+function sendEmail(payload: Record<string, unknown>): Promise<boolean> {
+  return sendResendEmail(payload, "contact");
 }
 
 function rows(pairs: [string, string][]) {
@@ -368,12 +342,4 @@ async function recordToSheet(enquiry: CleanEnquiry) {
     }),
   });
   return response.ok;
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 }

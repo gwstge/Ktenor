@@ -30,7 +30,7 @@ export default async function HomePage({
       <Process t={t} />
       <Principles t={t} />
       <Advantages t={t} />
-      <Testimonials t={t} />
+      <Testimonials t={t} locale={locale} />
       <Faq t={t} />
       <CtaBand t={t} />
       <Contact t={t} locale={locale} />

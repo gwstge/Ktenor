@@ -17,6 +17,7 @@ const sk: Dictionary = {
     services: "Služby",
     process: "Postup",
     about: "O mne",
+    reviews: "Recenzie",
     contact: "Kontakt",
     menu: "Menu",
     openMenu: "Otvoriť menu",
@@ -254,8 +255,46 @@ const sk: Dictionary = {
   testimonials: {
     eyebrow: "Referencie",
     title: "Čo hovoria klienti.",
-    comingSoon: "Čoskoro.",
-    empty: "Zatiaľ žiadne recenzie — sekcia sa naplní, keď sa dokončia prvé projekty.",
+    intro: "Skutočné hodnotenia zo skutočných projektov — moderované, nikdy neupravované.",
+    emptyTitle: "Buďte prvý, kto pridá recenziu.",
+    emptyBody: "Zatiaľ žiadne recenzie — sekcia sa naplní, keď sa dokončia prvé projekty.",
+    leaveReview: "Pridať recenziu",
+    seeAll: "Zobraziť všetky recenzie",
+  },
+
+  reviews: {
+    title: "Čo hovoria klienti.",
+    intro:
+      "Každá recenzia tu pochádza od niekoho, kto so mnou skutočne spolupracoval. Odoslané recenzie sa pred zverejnením kontrolujú, takže to, čo čítate, je skutočné.",
+    formTitle: "Pridať recenziu",
+    formIntro: "Stačí hodnotenie — pár slov o projekte je vítaných, ale nepovinných.",
+    fields: {
+      name: "Meno",
+      namePlaceholder: "Ako sa má zobraziť?",
+      rating: "Hodnotenie",
+      quote: "Pár slov o projekte",
+      quotePlaceholder: "Nepovinné — čo vás zaujalo?",
+      optional: "nepovinné",
+      required: "povinné",
+    },
+    submit: "Odoslať recenziu",
+    sending: "Odosielam…",
+    success: {
+      title: "Ďakujem — recenzia je na ceste.",
+      body: "Zverejní sa po kontrole, zvyčajne do jedného dňa.",
+    },
+    failure: {
+      title: "Odoslanie zlyhalo.",
+      body: "Niečo sa pokazilo cestou. Skúste to znova alebo ma kontaktujte priamo.",
+    },
+    errors: {
+      name: "Zadajte prosím svoje meno.",
+      rating: "Vyberte prosím hodnotenie.",
+    },
+    consent: {
+      label: "Súhlasím so spracovaním osobných údajov",
+      link: "Ochrana osobných údajov",
+    },
   },
 
   faq: {

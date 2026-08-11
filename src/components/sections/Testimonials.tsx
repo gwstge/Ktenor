@@ -1,75 +1,71 @@
+import Link from "next/link";
 import type { Dictionary } from "@/i18n";
-import { site } from "@/lib/site";
+import type { Locale } from "@/i18n/config";
+import { listApprovedReviews } from "@/lib/db";
 import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
+import { ReviewCard } from "@/components/reviews/ReviewCard";
 
-export type Testimonial = {
-  id: string;
-  quote: string;
-  author: string;
-  role?: string;
-};
+const TEASER_COUNT = 6;
 
 /**
- * No reviews yet, and the owner would rather say so plainly than hide the
- * section — the same call made for Work: one deliberate placeholder reads as
- * "this is coming," a missing section reads as nothing at all.
- *
- * `site.features.testimonials` still gates the real grid below; flip it once
- * `testimonials` holds actual quotes and this placeholder steps aside.
+ * Reads straight from the database — no API round trip needed for a server
+ * component. Falls back to the empty state on any failure (storage not
+ * provisioned yet, a bad connection string) rather than breaking the
+ * homepage over a section that was always meant to degrade gracefully.
  */
-export const testimonials: Testimonial[] = [];
-
-export function Testimonials({ t }: { t: Dictionary }) {
-  if (site.features.testimonials && testimonials.length > 0) {
-    return (
-      <Section eyebrow={t.testimonials.eyebrow} title={t.testimonials.title}>
-        <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {testimonials.map((item) => (
-            <li key={item.id}>
-              <figure className="surface flex h-full flex-col rounded-[var(--radius-lg)] p-7">
-                <span aria-hidden className="flex gap-1">
-                  <span className="h-4 w-[3px] rounded-full bg-accent" />
-                  <span className="h-4 w-[3px] rounded-full bg-accent-mid" />
-                  <span className="h-4 w-[3px] rounded-full bg-accent-deep" />
-                </span>
-                <blockquote className="mt-6 flex-1 text-[length:var(--text-lead)]">
-                  {item.quote}
-                </blockquote>
-                <figcaption className="mt-6 border-t border-line pt-5 text-sm">
-                  <span className="text-text">{item.author}</span>
-                  {item.role ? (
-                    <span className="block text-caption text-text-muted">{item.role}</span>
-                  ) : null}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </Section>
-    );
-  }
+export async function Testimonials({ t, locale }: { t: Dictionary; locale: Locale }) {
+  const reviews = await listApprovedReviews(TEASER_COUNT).catch(() => []);
 
   return (
-    <Section eyebrow={t.testimonials.eyebrow} title={t.testimonials.title}>
-      <article className="surface relative overflow-hidden rounded-[var(--radius-lg)] px-7 py-14 text-center sm:px-14 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-60"
-          style={{
-            background:
-              "radial-gradient(70% 100% at 50% 0%, var(--c-accent-deep), transparent 62%)",
-          }}
-        />
-        <span aria-hidden className="relative mx-auto flex w-fit items-end gap-1.5">
-          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
-          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
-          <span className="h-7 w-[5px] rounded-full bg-line-strong" />
-        </span>
-        <p className="relative mt-8 text-[length:var(--text-h2)]">{t.testimonials.comingSoon}</p>
-        <p className="relative mx-auto mt-4 max-w-[46ch] text-text-secondary">
-          {t.testimonials.empty}
-        </p>
-      </article>
+    <Section eyebrow={t.testimonials.eyebrow} title={t.testimonials.title} intro={t.testimonials.intro}>
+      {reviews.length > 0 ? (
+        <>
+          <ul data-reveal-group className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {reviews.map((review) => (
+              <li key={review.id}>
+                <ReviewCard review={review} />
+              </li>
+            ))}
+          </ul>
+          <div data-reveal className="mt-10 flex justify-center">
+            <Button href={`/${locale}/reviews`} variant="secondary">
+              {t.testimonials.seeAll}
+            </Button>
+          </div>
+        </>
+      ) : (
+        <article
+          data-reveal
+          className="surface relative overflow-hidden rounded-[var(--radius-lg)] px-7 py-14 text-center sm:px-14 sm:py-20"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-60"
+            style={{
+              background:
+                "radial-gradient(70% 100% at 50% 0%, var(--c-accent-deep), transparent 62%)",
+            }}
+          />
+          <span aria-hidden className="relative mx-auto flex w-fit items-end gap-1.5">
+            <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+            <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+            <span className="h-7 w-[5px] rounded-full bg-line-strong" />
+          </span>
+          <p className="relative mt-8 text-[length:var(--text-h2)]">{t.testimonials.emptyTitle}</p>
+          <p className="relative mx-auto mt-4 max-w-[46ch] text-text-secondary">
+            {t.testimonials.emptyBody}
+          </p>
+          <div className="relative mt-8">
+            <Link
+              href={`/${locale}/reviews`}
+              className="text-sm font-medium text-accent underline-offset-4 hover:underline"
+            >
+              {t.testimonials.leaveReview}
+            </Link>
+          </div>
+        </article>
+      )}
     </Section>
   );
 }

@@ -42,6 +42,14 @@ const en: PrivacyDoc = {
       ],
     },
     {
+      heading: "Reviews",
+      body: [
+        "Submitting a review sends your name, star rating and the optional line of text you write. It is stored in a database along with the language you submitted in, and starts out visible only to me while I check it.",
+        "A submitted review is never shown on the site automatically — it is published only after I approve it, and I may edit it for length or clarity before doing so. Rejected or unpublished reviews stay off the site and are deleted rather than kept indefinitely.",
+        "The database is hosted by Neon, provisioned through Vercel; it does not use your data for its own purposes.",
+      ],
+    },
+    {
       heading: "If you contact me directly",
       body: [
         "Email, phone and WhatsApp messages are kept only as long as needed to handle the conversation and any work that follows from it. They are not added to a mailing list and are not shared with anyone.",
@@ -96,6 +104,14 @@ const sk: PrivacyDoc = {
         "Tieto údaje slúžia na jediný účel — odpovedať na váš dopyt a prípadne realizovať prácu, ktorá z neho vyplynie. Posielajú sa mi e-mailom a zaznamenávajú sa do súkromnej tabuľky, aby sa dopyt nestratil, ak by e-mail nedorazil. Ak necháte e-mailovú adresu, príde vám naň automatické potvrdenie.",
         "Pomáhajú s tým dvaja poskytovatelia: Resend doručuje e-mail a Google Sheets uchováva záznam. Ani jeden nepoužíva vaše údaje na vlastné účely. Dopyty uchovávam len dovtedy, kým sú relevantné, a kedykoľvek môžete požiadať o ich vymazanie.",
         "Formulár tiež obsahuje skryté pole a meria, ako dlho trvalo jeho vyplnenie. Oboje slúži výlučne na filtrovanie automatického spamu a ani jedno vás neidentifikuje.",
+      ],
+    },
+    {
+      heading: "Recenzie",
+      body: [
+        "Odoslaním recenzie sa uloží vaše meno, hodnotenie hviezdičkami a nepovinný text, ktorý napíšete. Ukladá sa do databázy spolu s jazykom, v ktorom ste ju odoslali, a spočiatku ju vidím len ja pri kontrole.",
+        "Odoslaná recenzia sa na webe nezobrazí automaticky — zverejním ju až po schválení a pred zverejnením ju môžem upraviť kvôli dĺžke alebo zrozumiteľnosti. Zamietnuté alebo nezverejnené recenzie na webe nikdy nie sú a namiesto trvalého uchovávania ich mažem.",
+        "Databázu hostí Neon, sprostredkovaná cez Vercel; vaše údaje nevyužíva na vlastné účely.",
       ],
     },
     {

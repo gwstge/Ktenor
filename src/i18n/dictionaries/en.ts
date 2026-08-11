@@ -15,6 +15,7 @@ const en = {
     services: "Services",
     process: "Process",
     about: "About",
+    reviews: "Reviews",
     contact: "Contact",
     menu: "Menu",
     openMenu: "Open menu",
@@ -252,8 +253,46 @@ const en = {
   testimonials: {
     eyebrow: "Testimonials",
     title: "What clients say.",
-    comingSoon: "Coming soon.",
-    empty: "No reviews yet — this section will fill up as the first projects wrap up.",
+    intro: "Real ratings from real projects — moderated, never edited.",
+    emptyTitle: "Be the first to leave a review.",
+    emptyBody: "No reviews yet — this section fills up as the first projects wrap up.",
+    leaveReview: "Leave a review",
+    seeAll: "See all reviews",
+  },
+
+  reviews: {
+    title: "What clients say.",
+    intro:
+      "Every review here comes from someone who actually worked with Ktenor. Submitted reviews are checked before they go live, so what you read is real.",
+    formTitle: "Leave a review",
+    formIntro: "A rating is enough — a line about the project is welcome but optional.",
+    fields: {
+      name: "Name",
+      namePlaceholder: "How should this appear?",
+      rating: "Rating",
+      quote: "A word about the project",
+      quotePlaceholder: "Optional — what stood out to you?",
+      optional: "optional",
+      required: "required",
+    },
+    submit: "Submit review",
+    sending: "Sending…",
+    success: {
+      title: "Thank you — your review is in.",
+      body: "It goes live once it's been checked, usually within a day.",
+    },
+    failure: {
+      title: "That did not go through.",
+      body: "Something failed on the way. Try again, or reach me directly.",
+    },
+    errors: {
+      name: "Please enter your name.",
+      rating: "Please choose a rating.",
+    },
+    consent: {
+      label: "I agree to the processing of my personal data",
+      link: "Privacy Policy",
+    },
   },
 
   faq: {

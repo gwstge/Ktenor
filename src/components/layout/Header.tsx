@@ -22,6 +22,7 @@ export function Header({ locale, t }: Props) {
     { href: "#services", label: t.nav.services },
     { href: "#process", label: t.nav.process },
     { href: "#about", label: t.nav.about },
+    { href: `/${locale}/reviews`, label: t.nav.reviews, page: true },
     { href: "#contact", label: t.nav.contact },
   ];
 
@@ -91,15 +92,19 @@ export function Header({ locale, t }: Props) {
         </Link>
 
         <nav aria-label={t.nav.menu} className="hidden items-center gap-1 lg:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="link-rule rounded-[var(--radius-xs)] px-3.5 py-2 text-sm text-text-secondary transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:text-text"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) => {
+            const className =
+              "link-rule rounded-[var(--radius-xs)] px-3.5 py-2 text-sm text-text-secondary transition-colors duration-[var(--dur-base)] ease-[var(--ease-standard)] hover:text-text";
+            return link.page ? (
+              <Link key={link.href} href={link.href} className={className}>
+                {link.label}
+              </Link>
+            ) : (
+              <a key={link.href} href={link.href} className={className}>
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-1">
@@ -133,19 +138,33 @@ export function Header({ locale, t }: Props) {
         }`}
       >
         <nav className="container-page flex flex-col py-4">
-          {links.map((link, i) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              style={{ transitionDelay: open ? `${70 * i}ms` : "0ms" }}
-              className={`border-b border-line py-4 font-display text-h3 transition-[opacity,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] last:border-b-0 ${
-                open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link, i) => {
+            const className = `border-b border-line py-4 font-display text-h3 transition-[opacity,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] last:border-b-0 ${
+              open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            }`;
+            const style = { transitionDelay: open ? `${70 * i}ms` : "0ms" };
+            return link.page ? (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                style={style}
+                className={className}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                style={style}
+                className={className}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
       </div>
     </header>

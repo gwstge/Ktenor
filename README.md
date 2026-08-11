@@ -12,6 +12,7 @@ builder.
 - Tailwind CSS v4, design tokens defined in `src/app/globals.css`
 - Clash Display and Satoshi, self-hosted through `next/font/local`
 - Lenis for smooth scrolling
+- Postgres (via Neon) for reviews, through `@neondatabase/serverless`
 - Deployed on Vercel
 
 ## Getting started
@@ -48,11 +49,14 @@ site actually ships.
 | `CONTACT_TO_EMAIL` | no | Where enquiries arrive; defaults to the address in `src/lib/site.ts` |
 | `SHEET_WEBHOOK_URL` | for the log | Apps Script endpoint that appends an enquiry row |
 | `SHEET_WEBHOOK_SECRET` | for the log | Shared secret checked by that script |
+| `DATABASE_URL` | for reviews | Postgres connection string, set automatically when Postgres storage is provisioned from the Vercel dashboard |
+| `ADMIN_PASSWORD` | for reviews | Gates `/admin/reviews`, the review moderation page |
 
 Only `NEXT_PUBLIC_SITE_URL` is exposed to the browser. Everything else stays on
 the server.
 
-Full setup instructions are in [`docs/CONTACT-SETUP.md`](docs/CONTACT-SETUP.md).
+Full setup instructions are in [`docs/CONTACT-SETUP.md`](docs/CONTACT-SETUP.md)
+and [`docs/REVIEWS-SETUP.md`](docs/REVIEWS-SETUP.md).
 
 ## Project notes
 

@@ -52,6 +52,26 @@ Last updated: 2026-08-08
       live in `media-src/` and never ship
 - [x] Font payload 133 KB → 80 KB: 600 and 700 were preloaded but never drawn
 
+**Reviews**
+- [x] Star rating (required) + optional short quote, name required; stored in
+      Postgres (Neon), starts `pending`, never shown until approved
+- [x] `/admin/reviews` — password-gated, stateless signed-cookie session
+      (7 days), approve/reject/edit/delete, plus adding one manually
+- [x] Public `/sk/reviews` and `/en/reviews`: grid of approved reviews + the
+      submission form, empty state when there are none yet
+- [x] Homepage teaser (replaces the old "Coming soon" placeholder): up to 6
+      reviews + "See all reviews", or the empty state + "Leave a review"
+- [x] "Reviews" added to the header nav, pointing at the real page rather
+      than an in-page anchor like the rest of the menu
+- [x] Owner gets an emailed notification per submission (same Resend setup
+      as the contact form) with a link straight to the admin page
+- [x] Same anti-spam shape as the contact form: honeypot, minimum fill time,
+      per-IP rate limit
+- [x] Everything degrades honestly with no database configured: empty state
+      everywhere reviews would show, submissions fail with a real error
+      rather than a fake success — verified via a clean production build
+      with no `DATABASE_URL` set
+
 ## Live
 
 https://ktenor.online — apex is primary, `www` 308-redirects to it, `/` sends
@@ -81,10 +101,9 @@ is committed and nothing at build time needs ffmpeg.
 
 ## Open questions
 
-1. **The enquiry form has nowhere to deliver yet.** The endpoint is built and
-   tested, but `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `SHEET_WEBHOOK_URL` and
-   `SHEET_WEBHOOK_SECRET` are unset, so a submission currently fails honestly
-   rather than pretending. See `CONTACT-SETUP.md`.
+1. **Reviews has nowhere to store anything yet.** `DATABASE_URL` and
+   `ADMIN_PASSWORD` are unset, so a submission currently fails honestly
+   rather than pretending. See `REVIEWS-SETUP.md`.
 2. **Slovak proof-read** — declined for now, see below.
 
 ## Conventions

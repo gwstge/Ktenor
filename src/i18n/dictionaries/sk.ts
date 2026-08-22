@@ -55,12 +55,18 @@ const sk: Dictionary = {
     eyebrow: "Práce",
     title: "Klientske projekty.",
     intro:
-      "Klientske projekty zatiaľ chýbajú, tak je tu aspoň ukážka — fiktívna kaviareň, navrhnutá a naprogramovaná od začiatku do konca rovnako ako pri skutočnej zákazke.",
+      "Klientske projekty zatiaľ chýbajú, tak sú tu aspoň ukážky — fiktívne podniky, navrhnuté a naprogramované od začiatku do konca rovnako ako pri skutočnej zákazke.",
     projects: {
       cafe: {
         name: "Ember & Oak",
         description:
           "Jednostránkový web pre fiktívnu bratislavskú kaviareň: menu, galéria interiéru, recenzie a kontakt — ukážka hotového produktu.",
+        cta: "Pozrieť živé demo",
+      },
+      barbershop: {
+        name: "Forge & Blade",
+        description:
+          "Jednostránkový web pre fiktívne bratislavské holičstvo: služby, galéria, tím, recenzie a plnohodnotný ukážkový rezervačný formulár.",
         cta: "Pozrieť živé demo",
       },
     },

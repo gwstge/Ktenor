@@ -53,12 +53,18 @@ const en = {
     eyebrow: "Work",
     title: "Client projects.",
     intro:
-      "No client work yet, so here's a demo build instead — a fictional café, designed and coded end to end the same way a real client project would be.",
+      "No client work yet, so here are demo builds instead — fictional businesses, designed and coded end to end the same way a real client project would be.",
     projects: {
       cafe: {
         name: "Ember & Oak",
         description:
           "A one-page site for a fictional Bratislava coffee house: menu, interior gallery, reviews and contact, built as a demo of the finished product.",
+        cta: "View the live demo",
+      },
+      barbershop: {
+        name: "Forge & Blade",
+        description:
+          "A one-page site for a fictional Bratislava barbershop: services, gallery, team, reviews and a full demo booking flow.",
         cta: "View the live demo",
       },
     },

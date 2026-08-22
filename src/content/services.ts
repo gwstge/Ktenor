@@ -81,11 +81,14 @@ export const advantageIds = [
 ] as const;
 
 /**
- * Kept, though nothing renders it right now: the Work section shows a single
- * placeholder until real client projects exist. These are the four demo builds
- * that were planned, so bringing them back is a matter of wiring, not research.
+ * Demo builds shown in the Work section in place of real client projects,
+ * which don't exist yet. Each id maps to a route under /demo/<id>, a fully
+ * standalone site (own layout, fonts, palette) linked from Work.tsx.
  */
-export const projectIds = ["cafe", "store", "dental", "realestate"] as const;
+export const projectIds = ["cafe", "barbershop", "dental", "realestate"] as const;
+
+/** Only demos that actually exist render; the rest are future work. */
+export const builtProjectIds = ["cafe", "barbershop"] as const;
 
 export type ProjectId = (typeof projectIds)[number];
 

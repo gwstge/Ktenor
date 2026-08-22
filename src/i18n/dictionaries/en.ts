@@ -52,11 +52,17 @@ const en = {
   work: {
     eyebrow: "Work",
     title: "Client projects.",
-    placeholder: {
-      label: "To be continued",
-      description:
-        "No client projects yet — this section will be updated with real client work as soon as the first projects are completed.",
+    intro:
+      "No client work yet, so here's a demo build instead — a fictional café, designed and coded end to end the same way a real client project would be.",
+    projects: {
+      cafe: {
+        name: "Ember & Oak",
+        description:
+          "A one-page site for a fictional Bratislava coffee house: menu, interior gallery, reviews and contact, built as a demo of the finished product.",
+        cta: "View the live demo",
+      },
     },
+    comingSoon: "More demo projects on the way.",
   },
 
   services: {

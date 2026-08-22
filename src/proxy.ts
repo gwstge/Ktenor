@@ -23,8 +23,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip static assets, anything with a file extension, and /admin — that
-  // route lives outside [locale] entirely and would otherwise get bounced to
-  // a non-existent /sk/admin/... path.
-  matcher: ["/((?!_next|api|admin|.*\\..*).*)"],
+  // Skip static assets, anything with a file extension, and /admin and /demo
+  // — both live outside [locale] entirely and would otherwise get bounced to
+  // a non-existent /sk/admin/... or /sk/demo/... path.
+  matcher: ["/((?!_next|api|admin|demo|.*\\..*).*)"],
 };

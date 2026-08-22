@@ -1,48 +1,62 @@
+import Image from "next/image";
 import type { Dictionary } from "@/i18n";
 import { Section } from "@/components/ui/Section";
 
+const CAFE_THUMB =
+  "https://images.unsplash.com/photo-1605088576635-db443afdcab5?q=80&w=1200&auto=format&fit=crop";
+
 /**
- * There is no client work yet and the section says so plainly. A single
- * deliberate card reads as a decision; a grid of empty slots or invented
- * placeholders would read as an unfinished site.
- *
- * The three-bar mark is the same motif used in the logo and the intro loader,
- * so the placeholder still belongs to the brand rather than sitting outside it.
+ * There is no client work yet, so the first real thing to show is a demo
+ * build — Ember & Oak, a fictional café at /demo/cafe. It's a genuinely
+ * separate brand (own layout, fonts, palette; see that route's own files)
+ * rather than a screenshot glued onto this page.
  */
 export function Work({ t }: { t: Dictionary }) {
+  const cafe = t.work.projects.cafe;
+
   return (
-    <Section id="work" eyebrow={t.work.eyebrow} title={t.work.title}>
-      <article
+    <Section id="work" eyebrow={t.work.eyebrow} title={t.work.title} intro={t.work.intro}>
+      <a
+        href="/demo/cafe"
+        target="_blank"
+        rel="noopener noreferrer"
         data-reveal
-        className="surface surface-hover group relative overflow-hidden rounded-[var(--radius-lg)] px-7 py-14 sm:px-14 sm:py-20"
+        className="surface surface-hover group grid overflow-hidden rounded-[var(--radius-lg)] sm:grid-cols-[1.1fr_1fr]"
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-[var(--dur-slow)] group-hover:opacity-100"
-          style={{
-            background:
-              "radial-gradient(90% 120% at 8% 0%, var(--c-accent-deep), transparent 58%)",
-          }}
-        />
-
-        <div className="relative max-w-[52ch]">
-          {/* The brand's three bars, held mid-sequence: the third is still dim
-              because the work it stands for has not happened yet. */}
-          <span aria-hidden className="flex items-end gap-1.5">
-            <span className="h-7 w-[5px] rounded-full bg-accent" />
-            <span className="h-7 w-[5px] rounded-full bg-accent-mid" />
-            <span className="h-7 w-[5px] rounded-full bg-line-strong" />
-          </span>
-
-          <h3 className="mt-9 text-[length:var(--text-h2)]">
-            {t.work.placeholder.label}
-          </h3>
-
-          <p className="mt-5 text-[length:var(--text-lead)] text-text-secondary">
-            {t.work.placeholder.description}
-          </p>
+        <div className="relative aspect-[16/10] sm:aspect-auto">
+          <Image
+            src={CAFE_THUMB}
+            alt={cafe.name}
+            fill
+            sizes="(min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-[var(--dur-slower)] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]"
+          />
         </div>
-      </article>
+
+        <div className="flex flex-col justify-center p-7 sm:p-10">
+          <span className="text-caption uppercase tracking-[0.2em] text-text-muted">
+            Demo project
+          </span>
+          <h3 className="mt-3 font-display text-[length:var(--text-h2)]">{cafe.name}</h3>
+          <p className="mt-4 text-text-secondary">{cafe.description}</p>
+          <span className="link-rule mt-6 inline-flex w-fit items-center gap-2 text-sm font-medium text-accent">
+            {cafe.cta}
+            <svg aria-hidden viewBox="0 0 16 16" width="14" height="14" fill="none">
+              <path
+                d="M3.5 8h9M8.5 3.5 13 8l-4.5 4.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <p data-reveal className="mt-6 text-center text-sm text-text-muted">
+        {t.work.comingSoon}
+      </p>
     </Section>
   );
 }

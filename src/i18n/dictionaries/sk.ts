@@ -54,11 +54,17 @@ const sk: Dictionary = {
   work: {
     eyebrow: "Práce",
     title: "Klientske projekty.",
-    placeholder: {
-      label: "Pokračovanie nasleduje",
-      description:
-        "Zatiaľ žiadne klientske projekty — táto sekcia sa doplní o skutočné realizácie hneď po dokončení prvých projektov.",
+    intro:
+      "Klientske projekty zatiaľ chýbajú, tak je tu aspoň ukážka — fiktívna kaviareň, navrhnutá a naprogramovaná od začiatku do konca rovnako ako pri skutočnej zákazke.",
+    projects: {
+      cafe: {
+        name: "Ember & Oak",
+        description:
+          "Jednostránkový web pre fiktívnu bratislavskú kaviareň: menu, galéria interiéru, recenzie a kontakt — ukážka hotového produktu.",
+        cta: "Pozrieť živé demo",
+      },
     },
+    comingSoon: "Ďalšie ukážkové projekty čoskoro.",
   },
 
   services: {

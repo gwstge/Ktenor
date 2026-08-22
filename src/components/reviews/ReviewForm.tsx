@@ -1,9 +1,10 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n";
 import type { Locale } from "@/i18n/config";
 import { Button } from "@/components/ui/Button";
+import { LIMITS } from "@/lib/review";
 import { StarInput } from "./StarInput";
 
 type Errors = Partial<Record<"name" | "rating", string>>;
@@ -24,6 +25,20 @@ export function ReviewForm({ t, locale }: { t: Dictionary; locale: Locale }) {
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [messageVisible, setMessageVisible] = useState(false);
+
+  // Mirrors the mobile menu's own toggle pattern: mount in the "hidden"
+  // position first, then flip a frame later so the transition actually runs
+  // instead of snapping straight to its end state.
+  useEffect(() => {
+    if (status !== "sent" && status !== "failed") {
+      setMessageVisible(false);
+      return;
+    }
+    setMessageVisible(false);
+    const timer = setTimeout(() => setMessageVisible(true), 0);
+    return () => clearTimeout(timer);
+  }, [status]);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -129,18 +144,23 @@ export function ReviewForm({ t, locale }: { t: Dictionary; locale: Locale }) {
         </div>
 
         <div>
-          <label htmlFor={`${uid}-quote`} className="flex items-baseline gap-2 text-sm text-text-secondary">
-            {t.reviews.fields.quote}
-            <span className="text-caption text-text-muted">({t.reviews.fields.optional})</span>
-          </label>
+          <div className="flex items-baseline justify-between gap-3">
+            <label htmlFor={`${uid}-quote`} className="flex items-baseline gap-2 text-sm text-text-secondary">
+              {t.reviews.fields.quote}
+              <span className="text-caption text-text-muted">({t.reviews.fields.optional})</span>
+            </label>
+            <span className="text-caption tabular-nums text-text-muted">
+              {quote.length}/{LIMITS.quote}
+            </span>
+          </div>
           <textarea
             id={`${uid}-quote`}
             name="quote"
             rows={3}
             value={quote}
-            onChange={(e) => setQuote(e.target.value)}
+            onChange={(e) => setQuote(e.target.value.slice(0, LIMITS.quote))}
             placeholder={t.reviews.fields.quotePlaceholder}
-            maxLength={600}
+            maxLength={LIMITS.quote}
             className="mt-2 w-full resize-y rounded-[var(--radius-sm)] border border-line-strong bg-bg-raised px-4 py-3.5 text-body text-text outline-none transition-[border-color] duration-[var(--dur-base)] placeholder:text-text-muted focus-visible:border-accent"
           />
         </div>
@@ -163,12 +183,22 @@ export function ReviewForm({ t, locale }: { t: Dictionary; locale: Locale }) {
 
         <div className="grid gap-5">
           <Button type="submit" block disabled={status === "sending"}>
+            {status === "sending" ? (
+              <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-4 animate-spin">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.3" strokeWidth="3" />
+                <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+            ) : null}
             {status === "sending" ? t.reviews.sending : t.reviews.submit}
           </Button>
 
           <div aria-live="polite" aria-atomic="true">
             {status === "sent" ? (
-              <div className="surface rounded-[var(--radius-md)] p-5">
+              <div
+                className={`surface rounded-[var(--radius-md)] p-5 transition-[opacity,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] ${
+                  messageVisible ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+                }`}
+              >
                 <p className="flex items-center gap-2.5 text-sm font-medium">
                   <span aria-hidden className="flex gap-1">
                     <span className="h-4 w-1 rounded-full bg-accent" />
@@ -182,7 +212,11 @@ export function ReviewForm({ t, locale }: { t: Dictionary; locale: Locale }) {
             ) : null}
 
             {status === "failed" ? (
-              <div className="rounded-[var(--radius-md)] border border-[var(--c-danger-border)] bg-[var(--c-danger-bg)] p-5">
+              <div
+                className={`rounded-[var(--radius-md)] border border-[var(--c-danger-border)] bg-[var(--c-danger-bg)] p-5 transition-[opacity,transform] duration-[var(--dur-slow)] ease-[var(--ease-out-expo)] ${
+                  messageVisible ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+                }`}
+              >
                 <p className="text-sm font-medium text-[var(--c-danger)]">
                   {t.reviews.failure.title}
                 </p>

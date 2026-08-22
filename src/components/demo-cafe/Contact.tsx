@@ -2,8 +2,9 @@ import { site } from "@/content/demo-cafe/site";
 
 export function Contact() {
   return (
-    <section id="contact" className="bg-[var(--cream-deep)] py-20 md:py-28">
-      <div className="container-page">
+    <section id="contact" className="relative isolate bg-[var(--cream-deep)] py-20 md:py-28">
+      <div className="section-wash" data-tone="gold" aria-hidden />
+      <div className="container-page relative z-[1]">
         <header data-reveal className="mx-auto max-w-xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-terracotta">
             Find us

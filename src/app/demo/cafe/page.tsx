@@ -6,11 +6,15 @@ import { Reviews } from "@/components/demo-cafe/Reviews";
 import { Contact } from "@/components/demo-cafe/Contact";
 import { Footer } from "@/components/demo-cafe/Footer";
 import { Reveal } from "@/components/demo-cafe/Reveal";
+import { SmoothScroll } from "@/components/demo-cafe/SmoothScroll";
 
 export default function CafeDemoPage() {
   return (
     <>
+      <div aria-hidden className="bg-field" data-field />
+      <div aria-hidden className="bg-grain" />
       <Reveal />
+      <SmoothScroll />
       <Header />
       <main>
         <Hero />

@@ -3,8 +3,9 @@ import { menu } from "@/content/demo-cafe/menu";
 
 export function Menu() {
   return (
-    <section id="menu" className="py-20 md:py-28">
-      <div className="container-page">
+    <section id="menu" className="relative isolate py-20 md:py-28">
+      <div className="section-wash" data-tone="terracotta" aria-hidden />
+      <div className="container-page relative z-[1]">
         <header data-reveal className="mx-auto max-w-xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-terracotta">
             The menu
